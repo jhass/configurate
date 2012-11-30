@@ -21,11 +21,11 @@ module Configurate
   # 
   #     require Rails.root.join('lib', 'configuration')
   #     
-  #     AppSettings = Configuration::Settings.create do
-  #       add_provider Configuration::Provider::Env
-  #       add_provider Configuration::Provider::YAML, '/etc/app_settings.yml',
+  #     AppSettings = Configurate::Settings.create do
+  #       add_provider Configurate::Provider::Env
+  #       add_provider Configurate::Provider::YAML, '/etc/app_settings.yml',
   #                    namespace: Rails.env, required: false
-  #       add_provider Configuration::Provider::YAML, 'config/default_settings.yml'
+  #       add_provider Configurate::Provider::YAML, 'config/default_settings.yml'
   #       
   #       extend YourConfigurationMethods
   #     end
@@ -53,7 +53,7 @@ module Configurate
     
     def initialize
       @lookup_chain = LookupChain.new
-      $stderr.puts "Warning you called Configuration::Settings.new with a block, you really meant to call #create" if block_given?
+      $stderr.puts "Warning you called Configurate::Settings.new with a block, you really meant to call #create" if block_given?
     end
     
     # Create a new configuration object
