@@ -8,4 +8,5 @@ Gem::Specification.new do |s|
   s.files       = Dir["lib/**/*.rb"]
   s.homepage    = "https://github.com/MrZYX/configurate"
   s.license     = "MIT"
+  s.required_ruby_version = '~> 1.9.2'
 end
