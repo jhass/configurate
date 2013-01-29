@@ -28,5 +28,12 @@ describe Configurate::Provider::Env do
     it "makes an array out of comma separated values" do
       subject.lookup_path(array_path).should == ["foo", "bar", "baz"]
     end
+    
+    it "returns a unfrozen string" do
+      expect {
+        setting = subject.lookup_path(existing_path)
+        setting << "foo"
+      }.to_not raise_error
+    end
   end
 end
