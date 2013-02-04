@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Jonne Haß"]
   s.email       = "me@mrzyx.de"
   s.files       = Dir["lib/**/*.rb"]
-  s.homepage    = "https://github.com/MrZYX/configurate"
+  s.homepage    = "http://mrzyx.github.com/configurate"
   s.license     = "MIT"
   s.required_ruby_version = '~> 1.9.2'
 end
