@@ -7,8 +7,10 @@ module Configurate; module Provider
   class Env < Base
     def lookup_path(settings_path, *args)
       value = ENV[settings_path.join("_").upcase]
-      value = value.dup unless value.nil?
-      value = value.split(",") if value && value.include?(",")
+      unless value.nil?
+        value = value.dup
+        value = value.split(",") if value.include?(",")
+      end
       value
     end
   end
