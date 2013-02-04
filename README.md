@@ -11,6 +11,17 @@ to a pratically unlimited level.
 
 Configurate works with Ruby 1.9.2 or later.
 
+## Installation
+
+Just add
+
+```ruby
+gem 'configurate'
+```
+
+to your `Gemfile`.
+
+
 ## Usage
 
 A basic loader could look like this:
