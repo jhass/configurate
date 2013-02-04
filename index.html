@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Configurate by MrZYX</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Configurate</h1>
+        <p class="header">A flexible configuration system</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/MrZYX/configurate/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/MrZYX/configurate/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/MrZYX/configurate">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/MrZYX">MrZYX</a></p>
+
+
+      </header>
+      <section>
+        <h1>Configurate - A flexible configuration system</h1>
+
+<p><a href="https://travis-ci.org/MrZYX/configurate"><img src="https://secure.travis-ci.org/MrZYX/configurate.png?branch=master" alt="Build Status"></a>
+<a href="https://gemnasium.com/MrZYX/configurate"><img src="https://gemnasium.com/MrZYX/configurate.png" alt="Gemnasium"></a>
+<a href="https://codeclimate.com/github/MrZYX/configurate"><img src="https://codeclimate.com/badge.png" alt="Code Climate"></a></p>
+
+<p>Configurate allows you to specify a chain of configuration providers which are
+queried in order until one returns a value. This allows scenarios like overiding
+settings your default settings with a user configuration file and let those be overidden
+by environment variables. The query interface allows to group and nest your configuration options
+to a pratically unlimited level.</p>
+
+<p>Configurate works with Ruby 1.9.2 or later.</p>
+
+<h2>Usage</h2>
+
+<p>A basic loader could look like this:</p>
+
+<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'configurate'</span>
+
+<span class="no">Config</span> <span class="o">=</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Settings</span><span class="o">.</span><span class="n">create</span> <span class="k">do</span>
+  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Env</span>
+  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'/etc/app_settings.yml'</span><span class="p">,</span>
+               <span class="n">namespace</span><span class="p">:</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">required</span><span class="p">:</span> <span class="kp">false</span>
+  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'config/default_settings.yml'</span>
+<span class="k">end</span>
+
+<span class="c1"># Somewhere later</span>
+<span class="k">if</span> <span class="no">Config</span><span class="o">.</span><span class="n">remote_assets</span><span class="o">.</span><span class="n">enable?</span>
+  <span class="n">set_asset_host</span> <span class="no">Config</span><span class="o">.</span><span class="n">remote_assets</span><span class="o">.</span><span class="n">host</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>You can add custom methods working with your settings to your <code>Configurate::Settings</code> instance
+by calling <code>extend YourConfigurationMethods</code> inside the block passed to <code>#create</code>.</p>
+
+<p>Providers are called in the order they're added. You can already use the added providers to
+determine if further ones should be added:</p>
+
+<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'configurate'</span>
+
+<span class="no">Config</span> <span class="o">=</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Settings</span><span class="o">.</span><span class="n">create</span> <span class="k">do</span>
+  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Env</span>
+  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'config/settings.yml'</span> <span class="k">unless</span> <span class="n">heroku?</span>
+<span class="k">end</span>
+</pre></div>
+
+<p><code>add_provider</code> can be called later on the created object to add more providers to the chain.
+It takes a constant and parameters that should be passed to the initializer.</p>
+
+<p>A providers only requirement is that it responds to the <code>#lookup</code> method. <code>#lookup</code> is passed the current
+query chain, for example for a call to <code>Config.foo.bar.baz?</code> it gets <code>"foo.bar.baz"</code> passed.
+It should raise <code>Configurate::SettingNotFoundError</code> if it can't provide a value for the requested option.
+Any additional parameters are passed along to the provider, thus a <code>#lookup</code> method must be able to take
+any number of additional parameters.</p>
+
+<p>You're not limited to one instance of the configuration object.</p>
+
+<h2>Gotcha</h2>
+
+<p>Ruby does not allow to metaprogram <code>false</code>, thus something like</p>
+
+<div class="highlight"><pre><span class="nb">puts</span> <span class="s2">"yep"</span> <span class="k">if</span> <span class="no">Config</span><span class="o">.</span><span class="n">enable_stuff</span>
+</pre></div>
+
+<p>always outputs <code>yep</code>. The workaround is to append <code>.get</code> or <code>?</code> to get the
+real value:</p>
+
+<div class="highlight"><pre><span class="nb">puts</span> <span class="s2">"yep"</span> <span class="k">if</span> <span class="no">Config</span><span class="o">.</span><span class="n">enable_stuff?</span>
+</pre></div>
+
+<h2>Shipped providers</h2>
+
+<h3>Configurate::Provider::Base</h3>
+
+<p>A convience base class changing the interface for implementers. It provides a basic <code>#lookup</code> method
+which splits the passed in query string at the dots and passes the resulting array into <code>#lookup_path</code>.
+Any additional parametes are passed too. The result of <code>#lookup_path</code> is returned, unless it's <code>nil</code>
+then <code>Configurate::SettingNotFoundError</code> is raised. Subclasses are expected to implement <code>#lookup_path</code>.
+Do not use this class directly as a provider!</p>
+
+<h3>Configurate::Provider::Env</h3>
+
+<p>This class transforms a query string into a name for a environment variable and looks up this variable then.
+The conversion scheme is the following: Upcase, replace dots with underscores. So for example <code>Config.foo.bar.baz</code>
+would look for a environment variable named <code>FOO_BAR_BAZ</code>. Additionally it splits comma separated values
+into arrays.</p>
+
+<p>This provider does not take any additional initialization parameters.</p>
+
+<h3>Configurate::Provider::YAML</h3>
+
+<p>This provider reads settings from a given <a href="http://www.yaml.org">YAML</a> file. It converts the sections of
+query string to a nested value. For a given YAML file</p>
+
+<div class="highlight"><pre><span class="l-Scalar-Plain">stuff</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">enable</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+  <span class="l-Scalar-Plain">param</span><span class="p-Indicator">:</span> <span class="s">"foo"</span>
+  <span class="l-Scalar-Plain">nested</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">param</span><span class="p-Indicator">:</span> <span class="s">"bar"</span>
+</pre></div>
+
+<p>the following queries would be valid:</p>
+
+<div class="highlight"><pre><span class="no">Config</span><span class="o">.</span><span class="n">stuff</span><span class="o">.</span><span class="n">enable?</span>      <span class="c1"># =&gt; true</span>
+<span class="no">Config</span><span class="o">.</span><span class="n">stuff</span><span class="o">.</span><span class="n">param</span>        <span class="c1"># =&gt; "foo"</span>
+<span class="no">Config</span><span class="o">.</span><span class="n">stuff</span><span class="o">.</span><span class="n">nested</span><span class="o">.</span><span class="n">param</span> <span class="c1"># =&gt; "bar"</span>
+</pre></div>
+
+<p>The initializer takes a path to the configuration file as mandatory first argument and
+the following optional parameters, as a hash:</p>
+
+<ul>
+<li>
+<em>namespace:</em> Specify a alternative root. This is useful if you for example add the same file multiple
+times through multiple providers, with different namespaces, letting you overide settings depending on
+the rails environment, without duplicating common settings. Defaults to none.</li>
+<li>
+<em>required:</em> Whether to raise an error if the the file isn't found or, if one is given, the namespace
+doesn't exist in the file.</li>
+</ul><h3>Configurate::Provider::Dynamic</h3>
+
+<p>A provider which stores the first additonal parameter if the query string ends with an equal sign and can
+return it later. This is mainly useful for testing but can be useful to temporarily overide stuff
+too. To clarify a small example:</p>
+
+<div class="highlight"><pre><span class="no">Config</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span>         <span class="c1"># =&gt; nil</span>
+<span class="no">Config</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="s2">"baz"</span>
+<span class="no">Config</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span>         <span class="c1"># =&gt; "baz"</span>
+</pre></div>
+
+<h2>Writing a provider</h2>
+
+<p>...should be pretty easy. For example here is the <code>Configurate::Provider::Env</code> provider:</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Env</span> <span class="o">&lt;</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Base</span>
+  <span class="k">def</span> <span class="nf">lookup_path</span><span class="p">(</span><span class="n">settings_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="n">settings_path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">upcase</span><span class="o">]</span>
+    <span class="k">unless</span> <span class="n">value</span><span class="o">.</span><span class="n">nil?</span>
+      <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">dup</span> <span class="k">unless</span> <span class="n">value</span><span class="o">.</span><span class="n">nil?</span>
+      <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span> <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
+    <span class="k">end</span>
+    <span class="n">value</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<h2>Documentation</h2>
+
+<p>You can find the current documentation for the master branch <a href="http://rubydoc.info/github/MrZYX/configurate/master/frames/index">here</a>.</p>
+
+<h2>License</h2>
+
+<p>MIT, see <a href="./LICENSE">LICENSE</a></p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
