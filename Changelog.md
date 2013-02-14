@@ -1,3 +1,9 @@
+# 0.0.3.pre
+
+## Refactor
+
+* Prefer `public_send` over `send`
+
 # 0.0.2
 
 ## Bug fixes

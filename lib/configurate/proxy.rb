@@ -7,7 +7,7 @@ module Configurate
   # check for nil values, +if settings.foo.bar.present?+ to check for
   # empty values if you're in Rails and call {#get} to actually return the value,
   # commonly when doing +settings.foo.bar.get || 'default'+. If a setting
-  # ends with +=+ is too called directly, just like with +?+.
+  # ends with +=+ it's too called directly, just like with +?+.
   class Proxy < BasicObject
     COMMON_KEY_NAMES = [:key, :method]
     
@@ -40,12 +40,13 @@ module Configurate
     def send(*args, &block)
       self.__send__(*args, &block)
     end
+    alias_method :public_send, :send
     
     def method_missing(setting, *args, &block)
       unless COMMON_KEY_NAMES.include? setting
         target = self.get
         if !(target.respond_to?(:_proxy?) && target._proxy?) && target.respond_to?(setting)
-          return target.send(setting, *args, &block)
+          return target.public_send(setting, *args, &block)
         end
       end
 

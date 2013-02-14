@@ -46,9 +46,9 @@ module Configurate
     # @!method [](setting)
     # (see LookupChain#[])
     def method_missing(method, *args, &block)
-      return @lookup_chain.send(method, *args, &block) if [:lookup, :add_provider, :[]].include?(method)
+      return @lookup_chain.public_send(method, *args, &block) if [:lookup, :add_provider, :[]].include?(method)
       
-      Proxy.new(@lookup_chain).send(method, *args, &block)
+      Proxy.new(@lookup_chain).public_send(method, *args, &block)
     end
     
     def initialize

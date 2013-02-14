@@ -42,7 +42,7 @@ module Configurate; module Provider
       setting = setting_path.shift
       if hash.has_key?(setting)
         if setting_path.length > 0 && hash[setting].is_a?(Hash)
-          return lookup_in_hash(setting_path, hash[setting]) if setting.length > 1
+          return lookup_in_hash(setting_path, hash[setting]) if setting.length >= 1
         else
           return hash[setting]
         end
