@@ -1,1 +1,1 @@
-rvm use --create 1.9.3-p327@configurate
+rvm use --create 2.0.0-p0@configurate

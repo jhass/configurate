@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.test_files    = Dir["spec/**/*.rb"]
   s.require_paths = ["lib"]
 
-  s.required_ruby_version = '~> 1.9.2'
+  s.required_ruby_version = '>= 1.9.2'
 
   s.add_development_dependency 'rake',  '~> 10.0.3'
   s.add_development_dependency 'rspec', '~> 2.12.0'
