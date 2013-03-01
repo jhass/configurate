@@ -2,6 +2,7 @@
 
 ## Refactor
 
+* Support Ruby 2.0.0
 * Prefer `public_send` over `send`
 
 # 0.0.2
