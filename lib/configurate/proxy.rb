@@ -9,24 +9,22 @@ module Configurate
   # commonly when doing +settings.foo.bar.get || 'default'+. If a setting
   # ends with +=+ it's too called directly, just like with +?+.
   class Proxy < BasicObject
-    COMMON_KEY_NAMES = [:key, :method]
-    
     # @param lookup_chain [#lookup]
     def initialize(lookup_chain)
       @lookup_chain = lookup_chain
-      @setting = ""
+      @setting_path = SettingPath.new
     end
     
     def !
-      !self.get
+      !self.target
     end
     
     def !=(other)
-      self.get != other
+      self.target != other
     end
     
     def ==(other)
-      self.get == other
+      self.target == other
     end
     
     def _proxy?
@@ -34,7 +32,7 @@ module Configurate
     end
     
     def respond_to?(method, include_private=false)
-      method == :_proxy? || self.get.respond_to?(method, include_private)
+      method == :_proxy? || self.target.respond_to?(method, include_private)
     end
     
     def send(*args, &block)
@@ -43,35 +41,34 @@ module Configurate
     alias_method :public_send, :send
     
     def method_missing(setting, *args, &block)
-      unless COMMON_KEY_NAMES.include? setting
-        target = self.get
-        if !(target.respond_to?(:_proxy?) && target._proxy?) && target.respond_to?(setting)
-          return target.public_send(setting, *args, &block)
-        end
-      end
+      return target.public_send(setting, *args, &block) if target_respond_to? setting
 
-      setting = setting.to_s
-
-      self.append_setting(setting)
+      @setting_path << setting
       
-      return self.get(*args) if setting.end_with?("?") ||  setting.end_with?("=")
+      return self.target(*args) if @setting_path.is_question_or_setter?
       
       self
     end
     
     # Get the setting at the current path, if found.
     # (see LookupChain#lookup)
-    def get(*args)
-      setting = @setting[1..-1]
-      return unless setting
-      val = @lookup_chain.lookup(setting.chomp("?"), *args)
-      val
+    def target(*args)
+      return if @setting_path.empty?
+
+      @lookup_chain.lookup(@setting_path, *args)
     end
+    alias_method :get, :target
     
-    protected
-    def append_setting(setting)
-      @setting << "."
-      @setting << setting
+    private
+    COMMON_KEY_NAMES = [:key, :method]
+
+    def target_respond_to?(setting)   
+      return false if COMMON_KEY_NAMES.include? setting
+
+      value = target
+      return false if value.respond_to?(:_proxy?) && value._proxy?
+
+      value.respond_to?(setting)
     end
   end
 end

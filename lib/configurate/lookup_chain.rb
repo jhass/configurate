@@ -31,8 +31,6 @@ module Configurate
     # @return [Array,String,Boolean,nil] whatever the provider provides
     #   is casted to a {String}, except for some special values
     def lookup(setting, *args)
-      setting = setting.to_s
-
       @provider.each do |provider|
         begin
           return special_value_or_string(provider.lookup(setting, *args))

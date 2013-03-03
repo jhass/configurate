@@ -5,12 +5,13 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-require 'configurate'
 
 begin
   require 'coveralls'
   Coveralls.wear!
 rescue; end
+
+require 'configurate'
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true

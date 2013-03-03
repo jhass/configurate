@@ -6,10 +6,10 @@ module Configurate; module Provider
   # wasn't found and {#lookup} will raise an {SettingNotFoundError} in that
   # case.
   class Base
-    def lookup(setting, *args)
-      result = lookup_path(setting.split("."), *args)
+    def lookup(*args)
+      result = lookup_path(*args)
       return result unless result.nil?
-      raise Configurate::SettingNotFoundError, "The setting #{setting} was not found"
+      raise Configurate::SettingNotFoundError, "The setting #{args.first} was not found"
     end
   end
 end; end

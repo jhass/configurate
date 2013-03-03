@@ -1,4 +1,5 @@
 
+require 'configurate/setting_path'
 require 'configurate/lookup_chain'
 require 'configurate/provider'
 require 'configurate/proxy'
