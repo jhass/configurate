@@ -58,6 +58,23 @@ describe Configurate::LookupChain do
       @provider[0].stub(:lookup).and_return(false)
       subject.lookup("enable").should be_false
     end
+
+    it "converts 'true' to true" do
+      @provider[0].stub(:lookup).and_return("true")
+      subject.lookup("enable").should be_true
+    end
+
+    it "converts 'false' to false" do
+      @provider[0].stub(:lookup).and_return("false")
+      subject.lookup("enable").should be_false
+    end
+
+    it "returns the value unchanged if it can't be converted" do
+      value = mock
+      value.stub(:respond_to?).with(:to_s).and_return(false)
+      @provider[0].stub(:lookup).and_return(value)
+      subject.lookup("enable").should == value
+    end
     
     it "returns nil if no value is found" do
       @provider.each { |p| p.stub(:lookup).and_raise(Configurate::SettingNotFoundError) }
