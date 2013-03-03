@@ -32,6 +32,11 @@ describe Configurate::Proxy do
       proxy.send(:foo)
     end
   end
+
+  describe "#proxy" do
+    subject { described_class.new(lookup_chain)._proxy? }
+    it { should be_true }
+  end
   
   describe "#target" do
     [:to_str, :to_s, :to_xml, :respond_to?, :present?, :!=,
