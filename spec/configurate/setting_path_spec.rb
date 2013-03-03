@@ -28,4 +28,11 @@ describe Configurate::SettingPath do
       it { should == path }
     end
   end
+
+  describe "#inspect" do
+    it "includes the dotted path" do
+      path = described_class.new([:foo, :bar])
+      path.inspect.should include "foo.bar"
+    end
+  end
 end

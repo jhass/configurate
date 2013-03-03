@@ -17,6 +17,21 @@ describe Configurate::Proxy do
       described_class.new(lookup_chain).method_missing(:url=)
     end
   end
+
+  describe "delegations" do
+    it "calls the target when negating" do
+      target = mock
+      lookup_chain.stub(:lookup).and_return(target)
+      target.should_receive(:!)
+      described_class.new(lookup_chain).something.__send__(:!)
+    end
+
+    it "calls __send__ on send" do
+      proxy = described_class.new(lookup_chain)
+      proxy.should_receive(:__send__).with(:foo).and_return(nil)
+      proxy.send(:foo)
+    end
+  end
   
   describe "#target" do
     [:to_str, :to_s, :to_xml, :respond_to?, :present?, :!=,

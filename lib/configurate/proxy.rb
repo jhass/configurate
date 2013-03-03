@@ -16,15 +16,15 @@ module Configurate
     end
     
     def !
-      !self.target
+      !target
     end
     
     def !=(other)
-      self.target != other
+      target != other
     end
     
     def ==(other)
-      self.target == other
+      target == other
     end
     
     def _proxy?
@@ -32,11 +32,11 @@ module Configurate
     end
     
     def respond_to?(method, include_private=false)
-      method == :_proxy? || self.target.respond_to?(method, include_private)
+      method == :_proxy? || target.respond_to?(method, include_private)
     end
     
     def send(*args, &block)
-      self.__send__(*args, &block)
+      __send__(*args, &block)
     end
     alias_method :public_send, :send
     

@@ -4,6 +4,7 @@
 
 * Support Ruby 2.0.0
 * Prefer `public_send` over `send`
+* Manage setting paths through dedicated objects
 
 # 0.0.2
 
