@@ -69,7 +69,9 @@ any number of additional parameters.
 
 You're not limited to one instance of the configuration object.
 
-## Gotcha
+## Gotchas
+
+### False
 
 Ruby does not allow to metaprogram `false`, thus something like
 
@@ -83,6 +85,24 @@ real value:
 ```ruby
 puts "yep" if Config.enable_stuff?
 ```
+
+### Module#===
+
+Another thing you can't overwrite in Ruby is the `===` operator, rendering case statements useless
+
+```
+puts case Config.some.setting
+     when NilClass
+       "nil"
+     when String
+       "string"
+     else
+       "unknown"
+     end
+```
+
+will always output `unknown`. Again use `.get`
+
 
 ## Shipped providers
 

@@ -1,20 +1,31 @@
 require 'spec_helper'
 
 describe Configurate::Proxy do
-  let(:lookup_chain) { mock }
-  before do
-    lookup_chain.stub(:lookup).and_return("something")
+  let(:lookup_chain) { mock(lookup: "something") }
+  let(:proxy) { described_class.new(lookup_chain) }
+
+  describe "in case statements" do
+    it "acts like the target" do
+      pending "If anyone knows a way to overwrite ===, please tell me :P"
+      result = case proxy
+               when String
+                "string"
+               else
+                "wrong"
+               end
+      result.should == "string"
+    end
   end
   
   describe "#method_missing" do
     it "calls #target if the method ends with a ?" do
       lookup_chain.should_receive(:lookup).and_return(false)
-      described_class.new(lookup_chain).method_missing(:enable?)
+      proxy.method_missing(:enable?)
     end
     
     it "calls #target if the method ends with a =" do
       lookup_chain.should_receive(:lookup).and_return(false)
-      described_class.new(lookup_chain).method_missing(:url=)
+      proxy.method_missing(:url=)
     end
   end
 
@@ -23,18 +34,17 @@ describe Configurate::Proxy do
       target = mock
       lookup_chain.stub(:lookup).and_return(target)
       target.should_receive(:!)
-      described_class.new(lookup_chain).something.__send__(:!)
+      proxy.something.__send__(:!)
     end
 
     it "calls __send__ on send" do
-      proxy = described_class.new(lookup_chain)
       proxy.should_receive(:__send__).with(:foo).and_return(nil)
       proxy.send(:foo)
     end
   end
 
   describe "#proxy" do
-    subject { described_class.new(lookup_chain)._proxy? }
+    subject { proxy._proxy? }
     it { should be_true }
   end
   
@@ -48,7 +58,7 @@ describe Configurate::Proxy do
         target.stub(:respond_to?).and_return(true)
         target.stub(:_proxy?).and_return(false)
         target.should_receive(method).and_return("something")
-        described_class.new(lookup_chain).something.__send__(method, mock)
+        proxy.something.__send__(method, mock)
       end
     end
     
@@ -57,12 +67,12 @@ describe Configurate::Proxy do
         target = mock
         lookup_chain.should_not_receive(:lookup)
         target.should_not_receive(method)
-        described_class.new(lookup_chain).something.__send__(method, mock)
+        proxy.something.__send__(method, mock)
       end
     end
     
     it "returns nil if no setting is given" do
-      described_class.new(lookup_chain).target.should be_nil
+      proxy.target.should be_nil
     end
   end
 end
