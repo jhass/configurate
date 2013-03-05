@@ -101,18 +101,36 @@ any number of additional parameters.</p>
 
 <p>You're not limited to one instance of the configuration object.</p>
 
-<h2>Gotcha</h2>
+<h2 id="gotchas">Gotchas</h2>
+
+<h3 id="false">False</h3>
 
 <p>Ruby does not allow to metaprogram <code>false</code>, thus something like</p>
 
-<div class="highlight"><pre><span class="nb">puts</span> <span class="s2">"yep"</span> <span class="k">if</span> <span class="no">Config</span><span class="o">.</span><span class="n">enable_stuff</span>
-</pre></div>
+<pre><code>puts "yep" if Config.enable_stuff
+</code></pre>
 
 <p>always outputs <code>yep</code>. The workaround is to append <code>.get</code> or <code>?</code> to get the
 real value:</p>
 
-<div class="highlight"><pre><span class="nb">puts</span> <span class="s2">"yep"</span> <span class="k">if</span> <span class="no">Config</span><span class="o">.</span><span class="n">enable_stuff?</span>
-</pre></div>
+<pre><code>puts "yep" if Config.enable_stuff?
+</code></pre>
+
+<h3 id="module">Module#===</h3>
+
+<p>Another thing you can't overwrite in Ruby is the <code>===</code> operator, rendering case statements useless</p>
+
+<pre><code>puts case Config.some.setting
+     when NilClass
+       "nil"
+     when String
+       "string"
+     else
+       "unknown"
+     end
+</code></pre>
+
+<p>will always output <code>unknown</code>. Again use <code>.get</code></p>
 
 <h2>Shipped providers</h2>
 
