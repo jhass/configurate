@@ -90,7 +90,7 @@ puts "yep" if Config.enable_stuff?
 
 Another thing you can't overwrite in Ruby is the `===` operator, rendering case statements useless
 
-```
+```ruby
 puts case Config.some.setting
      when NilClass
        "nil"
