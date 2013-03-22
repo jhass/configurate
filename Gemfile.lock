@@ -15,7 +15,7 @@ GEM
       thor
     diff-lcs (1.2.1)
     mime-types (1.21)
-    multi_json (1.7.1)
+    multi_json (1.7.2)
     rake (10.0.3)
     redcarpet (2.2.2)
     rest-client (1.6.7)
