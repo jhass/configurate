@@ -1,7 +1,7 @@
 require 'yaml'
 
 module Configurate; module Provider
-  # This provider tries to open a YAML file and does in nested lookups
+  # This provider tries to open a YAML file and does nested lookups
   # in it.
   class YAML < Base
     # @param file [String] the path to the file
@@ -13,27 +13,30 @@ module Configurate; module Provider
     # @raise [Errno:ENOENT] if the file isn't found
     def initialize(file, opts = {})
       @settings = {}
-      required = opts.has_key?(:required) ? opts.delete(:required) : true
+      required = opts.delete(:required) { true }
       
       @settings = ::YAML.load_file(file)
       
       namespace = opts.delete(:namespace)
       unless namespace.nil?
-        actual_settings = lookup_in_hash(namespace.split("."), @settings)
-        unless actual_settings.nil?
+        namespace = SettingPath.from_string(namespace)
+        actual_settings = lookup_in_hash(namespace, @settings)
+        if !actual_settings.nil?
           @settings = actual_settings
+        elsif required
+          raise ArgumentError, "Namespace #{namespace} not found in #{file}"
         else
-          raise ArgumentError, "Namespace #{namespace} not found in #{file}" if required
+          $stderr.puts "WARNING: Namespace #{namespace} not found in #{file}"
         end
       end
     rescue Errno::ENOENT => e
-      $stderr.puts "WARNING: configuration file #{file} not found, ensure it's present"
+      $stderr.puts "WARNING: Configuration file #{file} not found, ensure it's present"
       raise e if required
     end
     
     
-    def lookup_path(settings_path, *args)
-      lookup_in_hash(settings_path, @settings)
+    def lookup_path(setting_path, *args)
+      lookup_in_hash(setting_path, @settings)
     end
     
     private

@@ -7,12 +7,12 @@ require 'configurate/proxy'
 
 # A flexible and extendable configuration system.
 # The calling logic is isolated from the lookup logic
-# through configuration providers, which only requirement
+# through configuration providers, whose only requirement
 # is to define the +#lookup+ method and show a certain behavior on that.
 # The providers are asked in the order they were added until one provides
 # a response. This allows to even add multiple providers of the same type,
 # you never easier defined your default configuration parameters.
-# There are no class methods used, you can have an unlimited amount of
+# There is no shared state, you can have an unlimited amount of
 # independent configuration sources at the same time.
 #
 # See {Settings} for a quick start.
@@ -20,7 +20,7 @@ module Configurate
   # This is your main entry point. Instead of lengthy explanations
   # let an example demonstrate its usage:
   # 
-  #     require Rails.root.join('lib', 'configuration')
+  #     require 'configuration_methods'
   #     
   #     AppSettings = Configurate::Settings.create do
   #       add_provider Configurate::Provider::Env
@@ -41,11 +41,15 @@ module Configurate
     undef_method :method # Remove possible conflicts with common setting names
     
     # @!method lookup(setting)
-    #   (see LookupChain#lookup)
+    # (see {LookupChain#lookup})
+
     # @!method add_provider(provider, *args)
-    #   (see LookupChain#add_provider)
+    # (see {LookupChain#add_provider})
+
     # @!method [](setting)
-    # (see LookupChain#[])
+    # (see {LookupChain#[]})
+
+    # See description and {#lookup}, {#[]} and {#add_provider}
     def method_missing(method, *args, &block)
       return @lookup_chain.public_send(method, *args, &block) if [:lookup, :add_provider, :[]].include?(method)
       

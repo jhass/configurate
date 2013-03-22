@@ -8,11 +8,10 @@ module Configurate; module Provider
       @settings = {}
     end
     
-    def lookup_path(settings_path, *args)
-      key = settings_path.join(".")
+    def lookup_path(setting_path, *args)      
+      key = setting_path.to_s
       
-      if key.end_with?("=") && args.length > 0
-        key = key.chomp("=")
+      if setting_path.is_setter? && args.length > 0
         value = args.first
         value = value.get if value.respond_to?(:_proxy?) && value._proxy?
         @settings[key] = value

@@ -5,10 +5,10 @@
 [![Coverage Status](https://coveralls.io/repos/MrZYX/configurate/badge.png?branch=master)](https://coveralls.io/r/MrZYX/configurate)
 
 Configurate allows you to specify a chain of configuration providers which are
-queried in order until one returns a value. This allows scenarios like overiding
-settings your default settings with a user configuration file and let those be overidden
+queried in order until one returns a value. This allows scenarios like overriding
+settings your default settings with a user configuration file and let those be overridden
 by environment variables. The query interface allows to group and nest your configuration options
-to a pratically unlimited level.
+to a practically unlimited level.
 
 Configurate works with Ruby 1.9.2 or later.
 
@@ -62,8 +62,8 @@ end
 It takes a constant and parameters that should be passed to the initializer.
 
 A providers only requirement is that it responds to the `#lookup` method. `#lookup` is passed the current
-query chain, for example for a call to `Config.foo.bar.baz?` it gets `"foo.bar.baz"` passed.
-It should raise `Configurate::SettingNotFoundError` if it can't provide a value for the requested option.
+`SettingPath`, for example for a call to `Config.foo.bar.baz?` it gets a path with the items `'foo'`, `'bar'`, `baz'` passed. `SettingPath` behaves like `Array` with some methods added.
+The provider should raise `Configurate::SettingNotFoundError` if it can't provide a value for the requested option.
 Any additional parameters are passed along to the provider, thus a `#lookup` method must be able to take
 any number of additional parameters.
 
@@ -108,16 +108,16 @@ will always output `unknown`. Again use `.get`
 
 ### Configurate::Provider::Base
 
-A convience base class changing the interface for implementers. It provides a basic `#lookup` method
-which splits the passed in query string at the dots and passes the resulting array into `#lookup_path`.
-Any additional parametes are passed too. The result of `#lookup_path` is returned, unless it's `nil`
+A convenience base class changing the interface for implementers. It provides a basic `#lookup` method
+which just passes all parameters through to `#lookup_path`.
+The result of `#lookup_path` is returned, unless it's `nil`
 then `Configurate::SettingNotFoundError` is raised. Subclasses are expected to implement `#lookup_path`.
 Do not use this class directly as a provider!
 
 ### Configurate::Provider::Env
 
 This class transforms a query string into a name for a environment variable and looks up this variable then.
-The conversion scheme is the following: Upcase, replace dots with underscores. So for example `Config.foo.bar.baz`
+The conversion scheme is the following: Convert to uppercase, join path with underscores. So for example `Config.foo.bar.baz`
 would look for a environment variable named `FOO_BAR_BAZ`. Additionally it splits comma separated values
 into arrays.
 
@@ -148,7 +148,7 @@ The initializer takes a path to the configuration file as mandatory first argume
 the following optional parameters, as a hash:
 
 * *namespace:* Specify a alternative root. This is useful if you for example add the same file multiple
-  times through multiple providers, with different namespaces, letting you overide settings depending on
+  times through multiple providers, with different namespaces, letting you override settings depending on
   the rails environment, without duplicating common settings. Defaults to none.
 * *required:* Whether to raise an error if the the file isn't found or, if one is given, the namespace
   doesn't exist in the file.
@@ -171,10 +171,10 @@ Config.foo.bar         # => "baz"
 
 ```ruby
 class Configurate::Provider::Env < Configurate::Provider::Base
-  def lookup_path(settings_path, *args)
-    value = ENV[settings_path.join("_").upcase]
+  def lookup_path(setting_path, *args)
+    value = ENV[setting_path.join("_").upcase]
     unless value.nil?
-      value = value.dup unless value.nil?
+      value = value.dup
       value = value.split(",") if value.include?(",")
     end
     value

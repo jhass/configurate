@@ -1,14 +1,16 @@
 module Configurate
   # Proxy object to support nested settings
-  # Cavehat: Since this is always true, adding a ? at the end
+  #
+  # *Cavehats*: Since this object is always true, adding a +?+ at the end
   # returns the value, if found, instead of the proxy object.
   # So instead of +if settings.foo.bar+ use +if settings.foo.bar?+
   # to check for boolean values, +if settings.foo.bar.nil?+ to
-  # check for nil values, +if settings.foo.bar.present?+ to check for
-  # empty values if you're in Rails and call {#get} to actually return the value,
-  # commonly when doing +settings.foo.bar.get || 'default'+. Also don't
+  # check for nil values and of course you can do +if settings.foo.bar.present?+ to check for
+  # empty values if you're in Rails. Call {#get} to actually return the value,
+  # commonly when doing +settings.foo.bar.get || "default"+. Also don't
   # use this in case statements since +Module#===+ can't be fooled, again
   # call {#get}.
+  #
   # If a setting ends with +=+ it's too called directly, just like with +?+.
   class Proxy < BasicObject
     # @param lookup_chain [#lookup]
@@ -47,7 +49,7 @@ module Configurate
 
       @setting_path << setting
       
-      return self.target(*args) if @setting_path.is_question_or_setter?
+      return target(*args) if @setting_path.is_question_or_setter?
       
       self
     end

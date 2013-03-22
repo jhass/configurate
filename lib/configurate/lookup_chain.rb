@@ -1,12 +1,12 @@
 module Configurate
   # This object builds a chain of configuration providers to try to find
-  # a setting.
+  # the value of a setting.
   class LookupChain
     def initialize
       @provider = []
     end
     
-    # Add a provider to the chain. Providers are tried in the order
+    # Adds a provider to the chain. Providers are tried in the order
     # they are added, so the order is important.
     #
     # @param provider [#lookup]
@@ -25,12 +25,13 @@ module Configurate
     # Tries all providers in the order they were added to provide a response
     # for setting.
     #
-    # @param setting [#to_s] settings should be underscore_case,
-    #   nested settings should be separated by a dot
-    # @param *args further args passed to the provider
-    # @return [Array,String,Boolean,nil] whatever the provider provides
-    #   is casted to a {String}, except for some special values
+    # @param setting [SettingPath,String] nested settings as strings should
+    #   be separated by a dot
+    # @param ... further args passed to the provider
+    # @return [Array,Hash,String,Boolean,nil] whatever the responding
+    #   provider provides is casted to a {String}, except for some special values
     def lookup(setting, *args)
+      setting = SettingPath.from_string(setting) if setting.is_a? String
       @provider.each do |provider|
         begin
           return special_value_or_string(provider.lookup(setting, *args))

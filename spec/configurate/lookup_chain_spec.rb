@@ -35,7 +35,7 @@ describe Configurate::LookupChain do
     end
     
     it "it tries all providers" do
-      setting = "some.setting"
+      setting = Configurate::SettingPath.from_string "some.setting"
       @provider.each do |provider|
         provider.should_receive(:lookup).with(setting).and_raise(Configurate::SettingNotFoundError)
       end
