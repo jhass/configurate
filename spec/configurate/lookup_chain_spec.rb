@@ -28,7 +28,7 @@ describe Configurate::LookupChain do
   end
   
   describe "#lookup" do
-    before(:all) do
+    before do
       subject.add_provider ValidConfigurationProvider
       subject.add_provider ValidConfigurationProvider
       @provider = subject.instance_variable_get(:@provider)
