@@ -20,7 +20,6 @@
         <p class="header">A flexible configuration system</p>
 
         <ul>
-          <li><a class="buttons" href="https://rubygems.org/gems/configurate">RubyGems.org</a></li>
           <li class="download"><a class="buttons" href="https://github.com/MrZYX/configurate/zipball/master">Download ZIP</a></li>
           <li class="download"><a class="buttons" href="https://github.com/MrZYX/configurate/tarball/master">Download TAR</a></li>
           <li><a class="buttons github" href="https://github.com/MrZYX/configurate">View On GitHub</a></li>
@@ -33,18 +32,16 @@
       <section>
         <h1>Configurate - A flexible configuration system</h1>
 
-<p>
-  <a href="https://travis-ci.org/MrZYX/configurate"><img src="https://secure.travis-ci.org/MrZYX/configurate.png?branch=master" alt="Build Status"></a>
-  <a href="https://gemnasium.com/MrZYX/configurate"><img src="https://gemnasium.com/MrZYX/configurate.png" alt="Gemnasium"></a>
-  <a href="https://codeclimate.com/github/MrZYX/configurate"><img src="https://codeclimate.com/github/MrZYX/configurate.png" alt="Code Climate" style="max-width:100%;"></a>
-  <a href="https://coveralls.io/r/MrZYX/configurate"><img src="https://coveralls.io/repos/MrZYX/configurate/badge.png?branch=master" alt="Coverage Status"></a>
-</p>
+<p><a href="https://travis-ci.org/MrZYX/configurate"><img src="https://secure.travis-ci.org/MrZYX/configurate.png?branch=master" alt="Build Status"></a>
+<a href="https://gemnasium.com/MrZYX/configurate"><img src="https://gemnasium.com/MrZYX/configurate.png" alt="Gemnasium"></a>
+<a href="https://codeclimate.com/github/MrZYX/configurate"><img src="https://codeclimate.com/github/MrZYX/configurate.png" alt="Code Climate"></a>
+<a href="https://coveralls.io/r/MrZYX/configurate"><img src="https://coveralls.io/repos/MrZYX/configurate/badge.png?branch=master" alt="Coverage Status"></a></p>
 
 <p>Configurate allows you to specify a chain of configuration providers which are
-queried in order until one returns a value. This allows scenarios like overiding
-settings your default settings with a user configuration file and let those be overidden
+queried in order until one returns a value. This allows scenarios like overriding
+settings your default settings with a user configuration file and let those be overridden
 by environment variables. The query interface allows to group and nest your configuration options
-to a pratically unlimited level.</p>
+to a practically unlimited level.</p>
 
 <p>Configurate works with Ruby 1.9.2 or later.</p>
 
@@ -63,11 +60,11 @@ to a pratically unlimited level.</p>
 
 <div class="highlight"><pre><span class="nb">require</span> <span class="s1">'configurate'</span>
 
-<span class="no">Config</span> <span class="o">=</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Settings</span><span class="o">.</span><span class="n">create</span> <span class="k">do</span>
-  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Env</span>
-  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'/etc/app_settings.yml'</span><span class="p">,</span>
-               <span class="n">namespace</span><span class="p">:</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">required</span><span class="p">:</span> <span class="kp">false</span>
-  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'config/default_settings.yml'</span>
+<span class="no">Config</span> <span class="o">=</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Settings</span><span class="o">.</span><span class="n">create</span> <span class="k">do</span>
+  <span class="n">add_provider</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">Env</span>
+  <span class="n">add_provider</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'/etc/app_settings.yml'</span><span class="p">,</span>
+               <span class="ss">namespace</span><span class="p">:</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="ss">required</span><span class="p">:</span> <span class="kp">false</span>
+  <span class="n">add_provider</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'config/default_settings.yml'</span>
 <span class="k">end</span>
 
 <span class="c1"># Somewhere later</span>
@@ -84,9 +81,9 @@ determine if further ones should be added:</p>
 
 <div class="highlight"><pre><span class="nb">require</span> <span class="s1">'configurate'</span>
 
-<span class="no">Config</span> <span class="o">=</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Settings</span><span class="o">.</span><span class="n">create</span> <span class="k">do</span>
-  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Env</span>
-  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'config/settings.yml'</span> <span class="k">unless</span> <span class="n">heroku?</span>
+<span class="no">Config</span> <span class="o">=</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Settings</span><span class="o">.</span><span class="n">create</span> <span class="k">do</span>
+  <span class="n">add_provider</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">Env</span>
+  <span class="n">add_provider</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'config/settings.yml'</span> <span class="k">unless</span> <span class="n">heroku?</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -94,41 +91,41 @@ determine if further ones should be added:</p>
 It takes a constant and parameters that should be passed to the initializer.</p>
 
 <p>A providers only requirement is that it responds to the <code>#lookup</code> method. <code>#lookup</code> is passed the current
-query chain, for example for a call to <code>Config.foo.bar.baz?</code> it gets <code>"foo.bar.baz"</code> passed.
-It should raise <code>Configurate::SettingNotFoundError</code> if it can't provide a value for the requested option.
+<code>SettingPath</code>, for example for a call to <code>Config.foo.bar.baz?</code> it gets a path with the items <code>'foo'</code>, <code>'bar'</code>, <code>baz'</code> passed. <code>SettingPath</code> behaves like <code>Array</code> with some methods added.
+The provider should raise <code>Configurate::SettingNotFoundError</code> if it can't provide a value for the requested option.
 Any additional parameters are passed along to the provider, thus a <code>#lookup</code> method must be able to take
 any number of additional parameters.</p>
 
 <p>You're not limited to one instance of the configuration object.</p>
 
-<h2 id="gotchas">Gotchas</h2>
+<h2>Gotchas</h2>
 
-<h3 id="false">False</h3>
+<h3>False</h3>
 
 <p>Ruby does not allow to metaprogram <code>false</code>, thus something like</p>
 
-<pre><code>puts "yep" if Config.enable_stuff
-</code></pre>
+<div class="highlight"><pre><span class="nb">puts</span> <span class="s2">"yep"</span> <span class="k">if</span> <span class="no">Config</span><span class="o">.</span><span class="n">enable_stuff</span>
+</pre></div>
 
 <p>always outputs <code>yep</code>. The workaround is to append <code>.get</code> or <code>?</code> to get the
 real value:</p>
 
-<pre><code>puts "yep" if Config.enable_stuff?
-</code></pre>
+<div class="highlight"><pre><span class="nb">puts</span> <span class="s2">"yep"</span> <span class="k">if</span> <span class="no">Config</span><span class="o">.</span><span class="n">enable_stuff?</span>
+</pre></div>
 
-<h3 id="module">Module#===</h3>
+<h3>Module#===</h3>
 
 <p>Another thing you can't overwrite in Ruby is the <code>===</code> operator, rendering case statements useless</p>
 
-<pre><code>puts case Config.some.setting
-     when NilClass
-       "nil"
-     when String
-       "string"
-     else
-       "unknown"
-     end
-</code></pre>
+<div class="highlight"><pre><span class="nb">puts</span> <span class="k">case</span> <span class="no">Config</span><span class="o">.</span><span class="n">some</span><span class="o">.</span><span class="n">setting</span>
+     <span class="k">when</span> <span class="no">NilClass</span>
+       <span class="s2">"nil"</span>
+     <span class="k">when</span> <span class="nb">String</span>
+       <span class="s2">"string"</span>
+     <span class="k">else</span>
+       <span class="s2">"unknown"</span>
+     <span class="k">end</span>
+</pre></div>
 
 <p>will always output <code>unknown</code>. Again use <code>.get</code></p>
 
@@ -136,16 +133,16 @@ real value:</p>
 
 <h3>Configurate::Provider::Base</h3>
 
-<p>A convience base class changing the interface for implementers. It provides a basic <code>#lookup</code> method
-which splits the passed in query string at the dots and passes the resulting array into <code>#lookup_path</code>.
-Any additional parametes are passed too. The result of <code>#lookup_path</code> is returned, unless it's <code>nil</code>
+<p>A convenience base class changing the interface for implementers. It provides a basic <code>#lookup</code> method
+which just passes all parameters through to <code>#lookup_path</code>.
+The result of <code>#lookup_path</code> is returned, unless it's <code>nil</code>
 then <code>Configurate::SettingNotFoundError</code> is raised. Subclasses are expected to implement <code>#lookup_path</code>.
 Do not use this class directly as a provider!</p>
 
 <h3>Configurate::Provider::Env</h3>
 
 <p>This class transforms a query string into a name for a environment variable and looks up this variable then.
-The conversion scheme is the following: Upcase, replace dots with underscores. So for example <code>Config.foo.bar.baz</code>
+The conversion scheme is the following: Convert to uppercase, join path with underscores. So for example <code>Config.foo.bar.baz</code>
 would look for a environment variable named <code>FOO_BAR_BAZ</code>. Additionally it splits comma separated values
 into arrays.</p>
 
@@ -176,7 +173,7 @@ the following optional parameters, as a hash:</p>
 <ul>
 <li>
 <em>namespace:</em> Specify a alternative root. This is useful if you for example add the same file multiple
-times through multiple providers, with different namespaces, letting you overide settings depending on
+times through multiple providers, with different namespaces, letting you override settings depending on
 the rails environment, without duplicating common settings. Defaults to none.</li>
 <li>
 <em>required:</em> Whether to raise an error if the the file isn't found or, if one is given, the namespace
@@ -196,11 +193,11 @@ too. To clarify a small example:</p>
 
 <p>...should be pretty easy. For example here is the <code>Configurate::Provider::Env</code> provider:</p>
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Env</span> <span class="o">&lt;</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Base</span>
-  <span class="k">def</span> <span class="nf">lookup_path</span><span class="p">(</span><span class="n">settings_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
-    <span class="n">value</span> <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="n">settings_path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">upcase</span><span class="o">]</span>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Configurate</span><span class="o">::</span><span class="ss">Provider</span><span class="p">:</span><span class="ss">:Env</span> <span class="o">&lt;</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">Base</span>
+  <span class="k">def</span> <span class="nf">lookup_path</span><span class="p">(</span><span class="n">setting_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="n">setting_path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">upcase</span><span class="o">]</span>
     <span class="k">unless</span> <span class="n">value</span><span class="o">.</span><span class="n">nil?</span>
-      <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">dup</span> <span class="k">unless</span> <span class="n">value</span><span class="o">.</span><span class="n">nil?</span>
+      <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">dup</span>
       <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span> <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
     <span class="k">end</span>
     <span class="n">value</span>
