@@ -1,4 +1,5 @@
 # Configurate - A flexible configuration system
+[![Gem Version](https://badge.fury.io/rb/configurate.png)](https://rubygems.org/gems/configurate)
 [![Build Status](https://secure.travis-ci.org/MrZYX/configurate.png?branch=master)](https://travis-ci.org/MrZYX/configurate)
 [![Gemnasium](https://gemnasium.com/MrZYX/configurate.png)](https://gemnasium.com/MrZYX/configurate)
 [![Code Climate](https://codeclimate.com/github/MrZYX/configurate.png)](https://codeclimate.com/github/MrZYX/configurate)
