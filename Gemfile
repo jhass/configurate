@@ -7,4 +7,9 @@ group :doc do
   gem 'redcarpet', require: false
 end
 
+group :build do
+  gem 'bundler'
+  gem 'rubygems-openpgp'
+end
+
 gemspec

@@ -1,6 +1,6 @@
 language: ruby
 
-bundler_args: "--without doc"
+bundler_args: "--without doc build"
 
 rvm:
   - 1.9.2

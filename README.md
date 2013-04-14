@@ -6,7 +6,7 @@
 
 Configurate allows you to specify a chain of configuration providers which are
 queried in order until one returns a value. This allows scenarios like overriding
-settings your default settings with a user configuration file and let those be overridden
+your default settings with a user configuration file and let those be overridden
 by environment variables. The query interface allows to group and nest your configuration options
 to a practically unlimited level.
 
