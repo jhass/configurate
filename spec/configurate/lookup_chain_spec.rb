@@ -42,6 +42,25 @@ describe Configurate::LookupChain do
       
       subject.lookup(setting)
     end
+
+    it "converts a string to a SettingPath" do
+      provider = @provider.first
+      path = stub
+      path.stub(:stub).and_return(path)
+      provider.should_receive(:lookup).with(path).and_raise(Configurate::SettingNotFoundError)
+      setting = "bar"
+      Configurate::SettingPath.should_receive(:from_string).with(setting).and_return(path)
+      subject.lookup(setting)
+    end
+
+    it "passes a copy of the SettingPath to the provider" do
+      provider = @provider.first
+      path = mock("path")
+      copy = stub("copy")
+      path.should_receive(:dup).at_least(:once).and_return(copy)
+      provider.should_receive(:lookup).with(copy).and_raise(Configurate::SettingNotFoundError)
+      subject.lookup(path)
+    end
     
     it "stops if a value is found" do
       @provider[0].should_receive(:lookup).and_return("something")

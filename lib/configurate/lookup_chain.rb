@@ -34,7 +34,7 @@ module Configurate
       setting = SettingPath.from_string(setting) if setting.is_a? String
       @provider.each do |provider|
         begin
-          return special_value_or_string(provider.lookup(setting, *args))
+          return special_value_or_string(provider.lookup(setting.dup, *args))
         rescue SettingNotFoundError; end
       end
       

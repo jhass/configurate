@@ -1,3 +1,9 @@
+# 0.0.4
+
+## Bug fixes
+
+* Pass duplicates of SettingPath into the provider so that it can be modified by it.
+
 # 0.0.3
 
 ## Refactor
