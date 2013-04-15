@@ -37,6 +37,14 @@ describe Configurate::SettingPath do
     end
   end
 
+  describe "#<<" do
+    it 'converts the argument to a string' do
+      arg = mock
+      arg.should_receive(:to_s).and_return('bar')
+      described_class.new << arg
+    end
+  end
+
   describe "#to_s" do
     let(:path) { "example.path" }
     subject { described_class.new(path.split(".")).to_s }

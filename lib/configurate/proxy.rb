@@ -36,7 +36,7 @@ module Configurate
     end
     
     def respond_to?(method, include_private=false)
-      method == :_proxy? || target.respond_to?(method, include_private)
+      method == :_proxy? || target_respond_to?(method, include_private)
     end
     
     def send(*args, &block)
@@ -66,13 +66,13 @@ module Configurate
     private
     COMMON_KEY_NAMES = [:key, :method]
 
-    def target_respond_to?(setting)   
+    def target_respond_to?(setting, include_private=false)
       return false if COMMON_KEY_NAMES.include? setting
 
       value = target
       return false if value.respond_to?(:_proxy?) && value._proxy?
 
-      value.respond_to?(setting)
+      value.respond_to?(setting, include_private)
     end
   end
 end

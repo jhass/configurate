@@ -19,6 +19,10 @@ module Configurate
       last.to_s.end_with?("=")
     end
 
+    def <<(component)
+      super component.to_s
+    end
+
     def to_s
       join(".").chomp("?").chomp("=")
     end
