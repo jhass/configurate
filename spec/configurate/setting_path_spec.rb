@@ -62,7 +62,7 @@ describe Configurate::SettingPath do
   end
 
   describe "#pop" do
-    subject { question_path.shift }
+    subject { question_path.pop }
     it { should_not include "?" }
   end
 
