@@ -1,9 +1,23 @@
 require 'spec_helper'
 
 describe Configurate::SettingPath do
-  describe "::from_string" do
-    it "creates a path" do
-      described_class.from_string("foo.bar").should == described_class.new(["foo", "bar"])
+  describe "#initialize" do
+    context "with a string" do
+      it "creates a path" do
+        described_class.new("foo.bar").should == described_class.new(["foo", "bar"])
+      end
+    end
+  end
+
+  describe "#is_question?" do
+    context "with a question signature as setting" do
+      subject { described_class.new([:foo?]).is_question? }
+      it { should be_true }
+    end
+
+    context "with a normal path as setting" do
+      subject { described_class.new([:foo]).is_question? }
+      it { should be_false }
     end
   end
 

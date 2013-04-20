@@ -31,7 +31,7 @@ module Configurate
     # @return [Array,Hash,String,Boolean,nil] whatever the responding
     #   provider provides is casted to a {String}, except for some special values
     def lookup(setting, *args)
-      setting = SettingPath.from_string(setting) if setting.is_a? String
+      setting = SettingPath.new setting if setting.is_a? String
       @provider.each do |provider|
         begin
           return special_value_or_string(provider.lookup(setting.dup, *args))

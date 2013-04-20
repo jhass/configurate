@@ -19,8 +19,8 @@ module Configurate; module Provider
       
       namespace = opts.delete(:namespace)
       unless namespace.nil?
-        namespace = SettingPath.from_string(namespace)
-        actual_settings = lookup_in_hash(namespace, @settings)
+        namespace_path = SettingPath.new namespace
+        actual_settings = lookup_in_hash(namespace_path, @settings)
         if !actual_settings.nil?
           @settings = actual_settings
         elsif required
