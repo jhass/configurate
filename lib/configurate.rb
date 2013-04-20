@@ -1,3 +1,4 @@
+require 'forwardable'
 
 require 'configurate/setting_path'
 require 'configurate/lookup_chain'
@@ -39,6 +40,13 @@ module Configurate
     attr_reader :lookup_chain
     
     undef_method :method # Remove possible conflicts with common setting names
+
+    extend Forwardable
+
+    def initialize
+      @lookup_chain = LookupChain.new
+      $stderr.puts "Warning you called Configurate::Settings.new with a block, you really meant to call #create" if block_given?
+    end
     
     # @!method lookup(setting)
     # (see {LookupChain#lookup})
@@ -49,16 +57,11 @@ module Configurate
     # @!method [](setting)
     # (see {LookupChain#[]})
 
+    def_delegators :@lookup_chain, :lookup, :add_provider, :[]
+
     # See description and {#lookup}, {#[]} and {#add_provider}
     def method_missing(method, *args, &block)
-      return @lookup_chain.public_send(method, *args, &block) if [:lookup, :add_provider, :[]].include?(method)
-      
       Proxy.new(@lookup_chain).public_send(method, *args, &block)
-    end
-    
-    def initialize
-      @lookup_chain = LookupChain.new
-      $stderr.puts "Warning you called Configurate::Settings.new with a block, you really meant to call #create" if block_given?
     end
     
     # Create a new configuration object
