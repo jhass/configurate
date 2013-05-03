@@ -11,7 +11,7 @@ module Configurate
       @path = path
     end
 
-    def_delegators :@path, :empty?, :last, :join, :length, :size, :hsh
+    def_delegators :@path, :empty?, :length, :size, :hsh
 
     # Whether the current path looks like a question or setter method
     def is_question_or_setter?
@@ -20,12 +20,12 @@ module Configurate
 
     # Whether the current path looks like a question method
     def is_question?
-      last.to_s.end_with?("?")
+      @path.last.to_s.end_with?("?")
     end
 
     # Whether the current path looks like a setter method
     def is_setter?
-      last.to_s.end_with?("=")
+      @path.last.to_s.end_with?("=")
     end
 
     def each
@@ -35,20 +35,20 @@ module Configurate
       end
     end
 
-    def <<(component)
-      @path << component.to_s
+    [:join, :last, :shift, :pop].each do |method|
+      define_method method do |*args|
+        clean_special_characters @path.public_send(method, *args)
+      end
+    end
+
+    [:<<, :unshift, :push].each do |method|
+      define_method method do |*args|
+        @path.public_send method, *args.map(&:to_s)
+      end
     end
 
     def to_s
-      clean_special_characters join(".")
-    end
-
-    def shift
-      clean_special_characters @path.shift
-    end
-
-    def pop
-      clean_special_characters @path.pop
+      join(".")
     end
 
     def dup

@@ -56,27 +56,26 @@ describe Configurate::SettingPath do
     end
   end
 
-  describe "#shift" do
-    subject { question_path.shift }
-    it { should_not include "?" }
-  end
-
-  describe "#pop" do
-    subject { question_path.pop }
-    it { should_not include "?" }
-  end
-
   describe "#each" do
     it "should strip special characters" do
       long_path.all? { |c| c.include? "?" }.should be_false
     end
   end
 
-  describe "#<<" do
-    it 'converts the argument to a string' do
-      arg = mock
-      arg.should_receive(:to_s).and_return('bar')
-      described_class.new << arg
+  [:join, :last, :shift, :pop].each do |method|
+    describe "##{method}" do
+      subject { question_path.public_send method }
+      it { should_not include "?" }
+    end
+  end
+
+  [:<<, :unshift, :push].each do |method|
+    describe "##{method}" do
+      it 'converts the argument to a string' do
+        arg = mock
+        arg.should_receive(:to_s).and_return('bar')
+        described_class.new.public_send method, arg
+      end
     end
   end
 

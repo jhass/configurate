@@ -1,3 +1,9 @@
+# 0.0.7
+
+* Only directly delegate methods returning meta-information in SettingPath
+* Clean output of more methods in SettingPath
+* Sanitize more input methods in SettingPath
+
 # 0.0.6
 
 * Use Forwardable instead of method_missing where possible
