@@ -63,7 +63,7 @@ end
 It takes a constant and parameters that should be passed to the initializer.
 
 A providers only requirement is that it responds to the `#lookup` method. `#lookup` is passed the current
-`SettingPath`, for example for a call to `Config.foo.bar.baz?` it gets a path with the items `'foo'`, `'bar'`, `baz'` passed. `SettingPath` behaves like `Array` with some methods added.
+`SettingPath`, for example for a call to `Config.foo.bar.baz?` it gets a path with the items `'foo'`, `'bar'`, `'baz'` passed. `SettingPath` behaves like `Array` with some methods added.
 The provider should raise `Configurate::SettingNotFoundError` if it can't provide a value for the requested option.
 Any additional parameters are passed along to the provider, thus a `#lookup` method must be able to take
 any number of additional parameters.
