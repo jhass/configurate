@@ -1,3 +1,10 @@
+# 0.0.8
+
+* Include README.md into the gem
+* Skip namespace warning if there but empty
+* Do not overwrite dup in SettingPath
+* Fix tolerant loading of coveralls in the spec helper
+
 # 0.0.7
 
 * Only directly delegate methods returning meta-information in SettingPath
