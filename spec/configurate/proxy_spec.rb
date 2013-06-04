@@ -49,7 +49,7 @@ describe Configurate::Proxy do
   end
   
   describe "#target" do
-    [:to_str, :to_s, :to_xml, :respond_to?, :present?, :!=,
+    [:to_str, :to_s, :to_xml, :respond_to?, :present?, :!=, :eql?,
      :each, :try, :size, :length, :count, :==, :=~, :gsub, :blank?, :chop,
      :start_with?, :end_with?].each do |method|
       it "is called for accessing #{method} on the proxy" do

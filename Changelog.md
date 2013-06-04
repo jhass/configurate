@@ -4,6 +4,7 @@
 * Skip namespace warning if there but empty
 * Do not overwrite dup in SettingPath
 * Fix tolerant loading of coveralls in the spec helper
+* Improve comparisions in Proxy
 
 # 0.0.7
 

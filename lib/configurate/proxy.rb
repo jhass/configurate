@@ -14,7 +14,7 @@ module Configurate
   # If a setting ends with +=+ it's too called directly, just like with +?+.
   class Proxy < BasicObject
     # @param lookup_chain [#lookup]
-    def initialize(lookup_chain)
+    def initialize lookup_chain
       @lookup_chain = lookup_chain
       @setting_path = SettingPath.new
     end
@@ -23,28 +23,26 @@ module Configurate
       !target
     end
     
-    def !=(other)
-      target != other
-    end
-    
-    def ==(other)
-      target == other
+    [:!=, :==, :eql?].each do |method|
+      define_method method do |other|
+        target.public_send method, target_or_object(other)
+      end
     end
     
     def _proxy?
       true
     end
     
-    def respond_to?(method, include_private=false)
+    def respond_to? method, include_private=false
       method == :_proxy? || target_respond_to?(method, include_private)
     end
     
-    def send(*args, &block)
+    def send *args, &block
       __send__(*args, &block)
     end
     alias_method :public_send, :send
     
-    def method_missing(setting, *args, &block)
+    def method_missing setting, *args, &block
       return target.public_send(setting, *args, &block) if target_respond_to? setting
 
       @setting_path << setting
@@ -56,23 +54,31 @@ module Configurate
     
     # Get the setting at the current path, if found.
     # (see LookupChain#lookup)
-    def target(*args)
+    def target *args
       return if @setting_path.empty?
 
-      @lookup_chain.lookup(@setting_path, *args)
+      @lookup_chain.lookup @setting_path, *args
     end
     alias_method :get, :target
     
     private
     COMMON_KEY_NAMES = [:key, :method]
 
-    def target_respond_to?(setting, include_private=false)
+    def target_respond_to? setting, include_private=false
       return false if COMMON_KEY_NAMES.include? setting
 
       value = target
-      return false if value.respond_to?(:_proxy?) && value._proxy?
+      return false if proxy? value
 
-      value.respond_to?(setting, include_private)
+      value.respond_to? setting, include_private
+    end
+
+    def proxy? obj
+      obj.respond_to?(:_proxy?) && obj._proxy?
+    end
+
+    def target_or_object obj
+      proxy?(obj) ? obj.target : obj
     end
   end
 end
