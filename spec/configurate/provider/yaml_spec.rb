@@ -24,17 +24,24 @@ describe Configurate::Provider::YAML do
     
     context "with a namespace" do
       it "looks in the file for that namespace" do
-        namespace = "some"
+        namespace = "some.nested"
         ::YAML.stub(:load_file).and_return(settings)
         provider = described_class.new 'bla', namespace: namespace
-        provider.instance_variable_get(:@settings).should == settings[namespace]
+        provider.instance_variable_get(:@settings).should == settings['some']['nested']
       end
       
       it "raises if the namespace isn't found" do
         ::YAML.stub(:load_file).and_return({})
         expect {
-          described_class.new 'bla', namespace: "foo"
+          described_class.new 'bla', namespace: "bar"
         }.to raise_error ArgumentError
+      end
+
+      it "works with an empty namespace in the file" do
+        ::YAML.stub(:load_file).and_return({'foo' => {'bar' => nil}})
+        expect {
+          described_class.new 'bla', namespace: "foo.bar"
+        }.to_not raise_error ArgumentError
       end
     end
     

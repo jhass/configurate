@@ -62,7 +62,7 @@ describe Configurate::SettingPath do
     end
   end
 
-  [:join, :last, :shift, :pop].each do |method|
+  [:join, :first, :last, :shift, :pop].each do |method|
     describe "##{method}" do
       subject { question_path.public_send method }
       it { should_not include "?" }

@@ -19,13 +19,8 @@ module Configurate; module Provider
       
       namespace = opts.delete(:namespace)
       unless namespace.nil?
-        namespace_path = SettingPath.new namespace
-        actual_settings = lookup_in_hash(namespace_path, @settings)
-        if !actual_settings.nil?
-          @settings = actual_settings
-        elsif required
-          raise ArgumentError, "Namespace #{namespace} not found in #{file}"
-        else
+        @settings = lookup_in_hash(SettingPath.new(namespace), @settings) do
+          raise ArgumentError, "Namespace #{namespace} not found in #{file}" if required
           $stderr.puts "WARNING: Namespace #{namespace} not found in #{file}"
         end
       end
@@ -35,21 +30,19 @@ module Configurate; module Provider
     end
     
     
-    def lookup_path(setting_path, *args)
+    def lookup_path(setting_path, *)
       lookup_in_hash(setting_path, @settings)
     end
     
     private
     
-    def lookup_in_hash(setting_path, hash)
-      setting = setting_path.shift
-      if hash.has_key?(setting)
-        if setting_path.length > 0 && hash[setting].is_a?(Hash)
-          return lookup_in_hash(setting_path, hash[setting]) if setting.length >= 1
-        else
-          return hash[setting]
-        end
+    def lookup_in_hash(setting_path, hash, &fallback)
+      fallback ||= proc { nil }
+      while hash.is_a?(Hash) && hash.has_key?(setting_path.first) && !setting_path.empty?
+        hash = hash[setting_path.shift]
       end
+      return fallback.call unless setting_path.empty?
+      hash
     end
   end
 end; end

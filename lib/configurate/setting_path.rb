@@ -35,7 +35,7 @@ module Configurate
       end
     end
 
-    [:join, :last, :shift, :pop].each do |method|
+    [:join, :first, :last, :shift, :pop].each do |method|
       define_method method do |*args|
         clean_special_characters @path.public_send(method, *args)
       end
@@ -65,7 +65,7 @@ module Configurate
 
     private
 
-    def clean_special_characters(value)
+    def clean_special_characters value
       value.to_s.chomp("?").chomp("=")
     end
   end
