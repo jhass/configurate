@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    configurate (0.0.7)
+    configurate (0.0.8)
 
 GEM
   remote: https://rubygems.org/
@@ -14,12 +14,12 @@ GEM
       simplecov (>= 0.7)
       thor
     diff-lcs (1.2.4)
-    gems (0.8.0)
+    gems (0.8.1)
     gpg_status_parser (0.4.0)
     mime-types (1.23)
-    multi_json (1.7.2)
+    multi_json (1.7.6)
     rake (10.0.4)
-    redcarpet (2.2.2)
+    redcarpet (2.3.0)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     rspec (2.13.0)
