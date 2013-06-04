@@ -9,7 +9,7 @@
 begin
   require 'coveralls'
   Coveralls.wear!
-rescue; end
+rescue LoadError; end
 
 require 'configurate'
 
