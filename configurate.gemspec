@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
 
   s.files         = Dir["lib/**/*.rb"]
+  s.files        << "README.md"
   s.test_files    = Dir["spec/**/*.rb"]
   s.require_paths = ["lib"]
 
