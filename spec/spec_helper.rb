@@ -13,6 +13,12 @@ rescue LoadError; end
 
 require 'configurate'
 
+def silence_stderr
+  $stderr = StringIO.new
+  yield
+  $stderr = STDERR
+end
+
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.run_all_when_everything_filtered = true

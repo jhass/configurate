@@ -37,8 +37,8 @@ describe Configurate::Proxy do
       proxy.something.__send__(:!)
     end
 
-    it "calls __send__ on send" do
-      proxy.should_receive(:__send__).with(:foo).and_return(nil)
+    it "enables sends even though be BasicObject" do
+      proxy.should_receive(:foo)
       proxy.send(:foo)
     end
   end

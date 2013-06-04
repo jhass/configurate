@@ -17,7 +17,9 @@ describe Configurate::Provider::YAML do
     it "raises if the file is not found" do
       ::YAML.stub(:load_file).and_raise(Errno::ENOENT)
       expect {
-        described_class.new "foo"
+        silence_stderr do
+          described_class.new "foo"
+        end
       }.to raise_error Errno::ENOENT
     end
       
