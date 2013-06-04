@@ -38,6 +38,16 @@ describe Configurate::SettingPath do
     end
   end
 
+  describe "#initialize_copy" do
+    it "modifying a copy leaves the original unchanged" do
+      original = described_class.new ["foo", "bar"]
+      copy = original.clone
+      copy << "baz"
+      copy.should include "baz"
+      original.should_not include "baz"
+    end
+  end
+
 
   describe "#is_question_or_setter?" do
     context "with a question signature as setting" do

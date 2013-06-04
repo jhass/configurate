@@ -11,6 +11,11 @@ module Configurate
       @path = path
     end
 
+    def initialize_copy original
+      super
+      @path = @path.clone
+    end
+
     def_delegators :@path, :empty?, :length, :size, :hsh
 
     # Whether the current path looks like a question or setter method
@@ -49,10 +54,6 @@ module Configurate
 
     def to_s
       join(".")
-    end
-
-    def dup
-      SettingPath.new(@path.dup)
     end
 
     def ==(other)
