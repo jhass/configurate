@@ -11,7 +11,7 @@ module Configurate; module Provider
     #   the file or the namespace, if given, is not found. Defaults to +true+.
     # @raise [ArgumentError] if the namespace isn't found in the file
     # @raise [Errno:ENOENT] if the file isn't found
-    def initialize(file, opts = {})
+    def initialize file, opts = {}
       @settings = {}
       required = opts.delete(:required) { true }
       
@@ -22,6 +22,7 @@ module Configurate; module Provider
         @settings = lookup_in_hash(SettingPath.new(namespace), @settings) do
           raise ArgumentError, "Namespace #{namespace} not found in #{file}" if required
           $stderr.puts "WARNING: Namespace #{namespace} not found in #{file}"
+          nil
         end
       end
     rescue Errno::ENOENT => e
@@ -30,13 +31,13 @@ module Configurate; module Provider
     end
     
     
-    def lookup_path(setting_path, *)
+    def lookup_path setting_path, *_
       lookup_in_hash(setting_path, @settings)
     end
     
     private
     
-    def lookup_in_hash(setting_path, hash, &fallback)
+    def lookup_in_hash setting_path, hash, &fallback
       fallback ||= proc { nil }
       while hash.is_a?(Hash) && hash.has_key?(setting_path.first) && !setting_path.empty?
         hash = hash[setting_path.shift]
