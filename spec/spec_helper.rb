@@ -29,4 +29,8 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = 'random'
+
+  config.expect_with :rspec do |expect_config|
+    expect_config.syntax = :expect
+  end
 end

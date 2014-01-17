@@ -6,9 +6,9 @@ describe Configurate::Provider::Base do
     it "calls #lookup_path" do
       path = Configurate::SettingPath.new(["foo", "bar"])
       subject.should_receive(:lookup_path).with(path).and_return("something")
-      subject.lookup(path).should == "something"
+      expect(subject.lookup(path)).to eq "something"
     end
-    
+
     it "raises SettingNotFoundError if the #lookup_path returns nil" do
       subject.stub(:lookup_path).and_return(nil)
       expect {

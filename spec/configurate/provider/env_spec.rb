@@ -9,26 +9,26 @@ describe Configurate::Provider::Env do
     ENV['EXISTING_SETTING'] = "there"
     ENV['ARRAY'] = "foo,bar,baz"
   end
-  
+
   after(:all) do
     ENV['EXISTING_SETTING'] = nil
     ENV['ARRAY'] = nil
   end
-  
+
   describe '#lookup_path' do
     it "joins and upcases the path" do
       ENV.should_receive(:[]).with("EXISTING_SETTING")
-      subject.lookup_path(existing_path)
+      subject.lookup_path existing_path
     end
-    
+
     it "returns nil if the setting isn't available" do
-      subject.lookup_path(not_existing_path).should be_nil
+      expect(subject.lookup_path not_existing_path).to be_nil
     end
-    
+
     it "makes an array out of comma separated values" do
-      subject.lookup_path(array_path).should == ["foo", "bar", "baz"]
+      expect(subject.lookup_path array_path).to eq ["foo", "bar", "baz"]
     end
-    
+
     it "returns a unfrozen string" do
       expect {
         setting = subject.lookup_path(existing_path)
