@@ -12,4 +12,8 @@ group :build do
   gem 'rubygems-openpgp'
 end
 
+platform :rbx do
+  gem 'psych'
+end
+
 gemspec
