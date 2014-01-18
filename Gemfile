@@ -14,6 +14,7 @@ end
 
 platform :rbx do
   gem 'psych'
+  gem 'rubysl-singleton'
 end
 
 gemspec
