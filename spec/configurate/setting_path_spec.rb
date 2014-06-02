@@ -17,24 +17,24 @@ describe Configurate::SettingPath do
   describe "#is_question?" do
     context "with a question signature as setting" do
       subject { question_path.is_question? }
-      it { should be_true }
+      it { should be_truthy }
     end
 
     context "with a normal path as setting" do
       subject { normal_path.is_question? }
-      it { should be_false }
+      it { should be_falsey }
     end
   end
 
   describe "#is_setter?" do
     context "with a setter signature as setting" do
       subject { setter_path.is_setter? }
-      it { should be_true }
+      it { should be_truthy }
     end
 
     context "with a normal path as setting" do
       subject { normal_path.is_setter? }
-      it { should be_false }
+      it { should be_falsey }
     end
   end
 
@@ -52,23 +52,23 @@ describe Configurate::SettingPath do
   describe "#is_question_or_setter?" do
     context "with a question signature as setting" do
       subject { question_path.is_question_or_setter? }
-      it { should be_true }
+      it { should be_truthy }
     end
 
     context "with a setter signature as setting" do
       subject { setter_path.is_question_or_setter? }
-      it { should be_true }
+      it { should be_truthy }
     end
 
     context "with a normal path as setting" do
       subject { normal_path.is_question_or_setter? }
-      it { should be_false }
+      it { should be_falsey }
     end
   end
 
   describe "#each" do
     it "should strip special characters" do
-      expect(long_path.all? { |c| c.include? "?" }).to be_false
+      expect(long_path.all? { |c| c.include? "?" }).to be_falsey
     end
   end
 
@@ -83,7 +83,7 @@ describe Configurate::SettingPath do
     describe "##{method}" do
       it 'converts the argument to a string' do
         arg = double
-        arg.should_receive(:to_s).and_return('bar')
+        expect(arg).to receive(:to_s).and_return('bar')
         described_class.new.public_send method, arg
       end
     end

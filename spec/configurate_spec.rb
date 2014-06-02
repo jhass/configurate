@@ -6,8 +6,8 @@ describe Configurate::Settings do
 
     it "delegates the call to a new proxy object" do
       proxy = double
-      Configurate::Proxy.should_receive(:new).and_return(proxy)
-      proxy.should_receive(:method_missing).with(:some_setting).and_return("foo")
+      expect(Configurate::Proxy).to receive(:new).and_return(proxy)
+      expect(proxy).to receive(:method_missing).with(:some_setting).and_return("foo")
       subject.some_setting
     end
   end
@@ -17,7 +17,7 @@ describe Configurate::Settings do
       subject { described_class.create }
 
       it "delegates the call to #lookup_chain" do
-        subject.lookup_chain.should_receive(method)
+        expect(subject.lookup_chain).to receive(method)
         subject.send(method)
       end
     end

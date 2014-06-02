@@ -17,7 +17,7 @@ describe Configurate::Provider::Env do
 
   describe '#lookup_path' do
     it "joins and upcases the path" do
-      ENV.should_receive(:[]).with("EXISTING_SETTING")
+      expect(ENV).to receive(:[]).with("EXISTING_SETTING")
       subject.lookup_path existing_path
     end
 

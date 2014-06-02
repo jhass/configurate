@@ -22,7 +22,7 @@ describe Configurate::LookupChain do
     end
 
     it "passes extra args to the provider" do
-      ValidConfigurationProvider.should_receive(:new).with(:extra)
+      expect(ValidConfigurationProvider).to receive(:new).with(:extra)
       subject.add_provider ValidConfigurationProvider, :extra
     end
   end
@@ -36,9 +36,9 @@ describe Configurate::LookupChain do
 
     it "it tries all providers" do
       setting = Configurate::SettingPath.new "some.setting"
-      setting.stub(:clone).and_return(setting)
+      allow(setting).to receive(:clone).and_return(setting)
       @provider.each do |provider|
-        provider.should_receive(:lookup).with(setting).and_raise(Configurate::SettingNotFoundError)
+        expect(provider).to receive(:lookup).with(setting).and_raise(Configurate::SettingNotFoundError)
       end
 
       subject.lookup(setting)
@@ -47,10 +47,10 @@ describe Configurate::LookupChain do
     it "converts a string to a SettingPath" do
       provider = @provider.first
       path = double
-      path.stub(:clone).and_return(path)
-      provider.should_receive(:lookup).with(path).and_raise(Configurate::SettingNotFoundError)
+      allow(path).to receive(:clone).and_return(path)
+      expect(provider).to receive(:lookup).with(path).and_raise(Configurate::SettingNotFoundError)
       setting = "bar"
-      Configurate::SettingPath.should_receive(:new).with(setting).and_return(path)
+      expect(Configurate::SettingPath).to receive(:new).with(setting).and_return(path)
       subject.lookup(setting)
     end
 
@@ -58,46 +58,46 @@ describe Configurate::LookupChain do
       provider = @provider.first
       path = double("path")
       copy = double("copy")
-      path.should_receive(:clone).at_least(:once).and_return(copy)
-      provider.should_receive(:lookup).with(copy).and_raise(Configurate::SettingNotFoundError)
+      expect(path).to receive(:clone).at_least(:once).and_return(copy)
+      expect(provider).to receive(:lookup).with(copy).and_raise(Configurate::SettingNotFoundError)
       subject.lookup(path)
     end
 
     it "stops if a value is found" do
-      @provider[0].should_receive(:lookup).and_return("something")
-      @provider[1].should_not_receive(:lookup)
+      expect(@provider[0]).to receive(:lookup).and_return("something")
+      expect(@provider[1]).to_not receive(:lookup)
       subject.lookup("bla")
     end
 
     it "converts numbers to strings" do
-      @provider[0].stub(:lookup).and_return(5)
+      allow(@provider[0]).to receive(:lookup).and_return(5)
       expect(subject.lookup "foo").to eq "5"
     end
 
     it "does not convert false to a string" do
-      @provider[0].stub(:lookup).and_return(false)
-      expect(subject.lookup "enable").to be_false
+      allow(@provider[0]).to receive(:lookup).and_return(false)
+      expect(subject.lookup "enable").to be_falsey
     end
 
     it "converts 'true' to true" do
-      @provider[0].stub(:lookup).and_return("true")
-      expect(subject.lookup "enable").to be_true
+      allow(@provider[0]).to receive(:lookup).and_return("true")
+      expect(subject.lookup "enable").to be_truthy
     end
 
     it "converts 'false' to false" do
-      @provider[0].stub(:lookup).and_return("false")
-      expect(subject.lookup "enable").to be_false
+      allow(@provider[0]).to receive(:lookup).and_return("false")
+      expect(subject.lookup "enable").to be_falsey
     end
 
     it "returns the value unchanged if it can't be converted" do
       value = double
-      value.stub(:respond_to?).with(:to_s).and_return(false)
-      @provider[0].stub(:lookup).and_return(value)
+      allow(value).to receive(:respond_to?).with(:to_s).and_return(false)
+      allow(@provider[0]).to receive(:lookup).and_return(value)
       expect(subject.lookup "enable").to eq value
     end
 
     it "returns nil if no value is found" do
-      @provider.each { |p| p.stub(:lookup).and_raise(Configurate::SettingNotFoundError) }
+      @provider.each { |p| allow(p).to receive(:lookup).and_raise(Configurate::SettingNotFoundError) }
       expect(subject.lookup "not.me").to be_nil
     end
   end

@@ -15,7 +15,7 @@ describe Configurate::Provider::Dynamic do
 
     it "calls .get on the argument if a proxy object is given" do
       proxy = double(respond_to: true, _proxy?: true)
-      proxy.should_receive(:get)
+      expect(proxy).to receive(:get)
       subject.lookup_path Configurate::SettingPath.new(["bla="]), proxy
     end
   end

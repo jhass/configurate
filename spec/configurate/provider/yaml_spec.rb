@@ -10,12 +10,12 @@ describe Configurate::Provider::YAML do
   describe "#initialize" do
     it "loads the file" do
       file = "foobar.yml"
-      ::YAML.should_receive(:load_file).with(file).and_return({})
+      expect(::YAML).to receive(:load_file).with(file).and_return({})
       described_class.new file
     end
 
     it "raises if the file is not found" do
-      ::YAML.stub(:load_file).and_raise(Errno::ENOENT)
+      allow(::YAML).to receive(:load_file).and_raise(Errno::ENOENT)
       expect {
         silence_stderr do
           described_class.new "foo"
@@ -27,20 +27,20 @@ describe Configurate::Provider::YAML do
     context "with a namespace" do
       it "looks in the file for that namespace" do
         namespace = "some.nested"
-        ::YAML.stub(:load_file).and_return(settings)
+        allow(::YAML).to receive(:load_file).and_return(settings)
         provider = described_class.new 'bla', namespace: namespace
         expect(provider.instance_variable_get :@settings).to eq settings['some']['nested']
       end
 
       it "raises if the namespace isn't found" do
-        ::YAML.stub(:load_file).and_return({})
+        allow(::YAML).to receive(:load_file).and_return({})
         expect {
           described_class.new 'bla', namespace: "bar"
         }.to raise_error
       end
 
       it "works with an empty namespace in the file" do
-        ::YAML.stub(:load_file).and_return({'foo' => {'bar' => nil}})
+        allow(::YAML).to receive(:load_file).and_return({'foo' => {'bar' => nil}})
         expect {
           described_class.new 'bla', namespace: "foo.bar"
         }.to_not raise_error
@@ -49,14 +49,14 @@ describe Configurate::Provider::YAML do
 
     context "with required set to false" do
       it "doesn't raise if a file isn't found" do
-        ::YAML.stub(:load_file).and_raise(Errno::ENOENT)
+        allow(::YAML).to receive(:load_file).and_raise(Errno::ENOENT)
         expect {
           described_class.new "not_me", required: false
         }.not_to raise_error
       end
 
       it "doesn't raise if a namespace isn't found" do
-        ::YAML.stub(:load_file).and_return({})
+        allow(::YAML).to receive(:load_file).and_return({})
         expect {
           described_class.new 'bla', namespace: "foo", required: false
         }.not_to raise_error
@@ -66,7 +66,7 @@ describe Configurate::Provider::YAML do
 
   describe "#lookup_path" do
     before do
-      ::YAML.stub(:load_file).and_return(settings)
+      allow(::YAML).to receive(:load_file).and_return(settings)
       @provider = described_class.new 'dummy'
     end
 

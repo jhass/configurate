@@ -13,18 +13,18 @@ describe Configurate::Proxy do
                else
                 "wrong"
                end
-      result.should == "string"
+      expect(result).to eq "string"
     end
   end
 
   describe "#method_missing" do
     it "calls #target if the method ends with a ?" do
-      lookup_chain.should_receive(:lookup).and_return(false)
+      expect(lookup_chain).to receive(:lookup).and_return(false)
       proxy.method_missing(:enable?)
     end
 
     it "calls #target if the method ends with a =" do
-      lookup_chain.should_receive(:lookup).and_return(false)
+      expect(lookup_chain).to receive(:lookup).and_return(false)
       proxy.method_missing(:url=)
     end
   end
@@ -32,20 +32,20 @@ describe Configurate::Proxy do
   describe "delegations" do
     it "calls the target when negating" do
       target = double
-      lookup_chain.stub(:lookup).and_return(target)
-      target.should_receive(:!)
+      allow(lookup_chain).to receive(:lookup).and_return(target)
+      expect(target).to receive(:!)
       proxy.something.__send__(:!)
     end
 
     it "enables sends even though be BasicObject" do
-      proxy.should_receive(:foo)
+      expect(proxy).to receive(:foo)
       proxy.send(:foo)
     end
   end
 
   describe "#proxy" do
     subject { proxy._proxy? }
-    it { should be_true }
+    it { should be_truthy }
   end
 
   describe "#target" do
@@ -54,8 +54,8 @@ describe Configurate::Proxy do
      :start_with?, :end_with?].each do |method|
       it "is called for accessing #{method} on the proxy" do
         target = double(respond_to?: true, _proxy?: false)
-        lookup_chain.stub(:lookup).and_return(target)
-        target.should_receive(method).and_return("something")
+        allow(lookup_chain).to receive(:lookup).and_return(target)
+        expect(target).to receive(method).and_return("something")
         proxy.something.__send__(method, double)
       end
     end
@@ -63,8 +63,8 @@ describe Configurate::Proxy do
     described_class::COMMON_KEY_NAMES.each do |method|
       it "is not called for accessing #{method} on the proxy" do
         target = double
-        lookup_chain.should_not_receive(:lookup)
-        target.should_not_receive(method)
+        expect(lookup_chain).to_not receive(:lookup)
+        expect(target).to_not receive(method)
         proxy.something.__send__(method, double)
       end
     end
