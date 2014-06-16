@@ -4,8 +4,8 @@ Gem::Specification.new do |s|
   s.summary     = "Flexbile configuration system"
   s.description = "Configurate is a flexible configuration system that can read settings from multiple sources at the same time."
   s.authors     = ["Jonne Haß"]
-  s.email       = "me@mrzyx.de"
-  s.homepage    = "http://mrzyx.github.com/configurate"
+  s.email       = "me@jhass.eu"
+  s.homepage    = "http://jhass.github.io/configurate"
   s.license     = "MIT"
 
   s.files         = Dir["lib/**/*.rb"]+["README.md", "Changelog.md", "LICENSE"]
