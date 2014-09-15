@@ -3,7 +3,7 @@
 [![Build Status](https://secure.travis-ci.org/jhass/configurate.png?branch=master)](https://travis-ci.org/jhass/configurate)
 [![Gemnasium](https://gemnasium.com/MrZYX/configurate.png)](https://gemnasium.com/MrZYX/configurate)
 [![Code Climate](https://codeclimate.com/github/jhass/configurate.png)](https://codeclimate.com/github/MrZYX/configurate)
-[![Coverage Status](https://coveralls.io/repos/MrZYX/configurate/badge.png?branch=master)](https://coveralls.io/r/MrZYX/configurate)
+[![Coverage Status](https://coveralls.io/repos/jhass/configurate/badge.png?branch=master)](https://coveralls.io/r/MrZYX/configurate)
 
 Configurate allows you to specify a chain of configuration providers which are
 queried in order until one returns a value. This allows scenarios like overriding
