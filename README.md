@@ -186,7 +186,7 @@ end
 
 ## Documentation
 
-You can find the current documentation for the master branch [here](http://rubydoc.info/github/MrZYX/configurate/master/frames/index).
+You can find the current documentation for the master branch [here](http://rubydoc.info/github/jhass/configurate/master/frames/index).
 
 
 ## License
