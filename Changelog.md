@@ -1,3 +1,7 @@
+# 0.1.0
+
+* Dynamic provider resolves nested assignments
+
 # 0.0.8
 
 * Include README.md into the gem

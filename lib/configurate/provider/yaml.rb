@@ -14,12 +14,12 @@ module Configurate; module Provider
     def initialize file, opts = {}
       @settings = {}
       required = opts.delete(:required) { true }
-      
+
       @settings = ::YAML.load_file(file)
-      
+
       namespace = opts.delete(:namespace)
       unless namespace.nil?
-        @settings = lookup_in_hash(SettingPath.new(namespace), @settings) do
+        @settings = Provider.lookup_in_hash(SettingPath.new(namespace), @settings) do
           raise ArgumentError, "Namespace #{namespace} not found in #{file}" if required
           $stderr.puts "WARNING: Namespace #{namespace} not found in #{file}"
           nil
@@ -29,21 +29,9 @@ module Configurate; module Provider
       $stderr.puts "WARNING: Configuration file #{file} not found, ensure it's present"
       raise e if required
     end
-    
-    
+
     def lookup_path setting_path, *_
-      lookup_in_hash(setting_path, @settings)
-    end
-    
-    private
-    
-    def lookup_in_hash setting_path, hash, &fallback
-      fallback ||= proc { nil }
-      while hash.is_a?(Hash) && hash.has_key?(setting_path.first) && !setting_path.empty?
-        hash = hash[setting_path.shift]
-      end
-      return fallback.call unless setting_path.empty?
-      hash
+      Provider.lookup_in_hash(setting_path, @settings)
     end
   end
 end; end

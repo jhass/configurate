@@ -11,6 +11,20 @@ module Configurate; module Provider
       raise Configurate::SettingNotFoundError, "The setting #{args.first} was not found"
     end
   end
+
+  # Utility function to lookup a settings path in a hash
+  # @param setting_path [SettingPath]
+  # @param hash [Hash]
+  # @yield fallback value if not found
+  # @return [Object]
+  def self.lookup_in_hash setting_path, hash, &fallback
+    fallback ||= proc { nil }
+    while hash.is_a?(Hash) && hash.has_key?(setting_path.first) && !setting_path.empty?
+      hash = hash[setting_path.shift]
+    end
+    return fallback.call unless setting_path.empty?
+    hash
+  end
 end; end
 
 require 'configurate/provider/yaml'

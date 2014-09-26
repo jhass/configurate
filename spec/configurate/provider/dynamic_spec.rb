@@ -18,5 +18,10 @@ describe Configurate::Provider::Dynamic do
       expect(proxy).to receive(:get)
       subject.lookup_path Configurate::SettingPath.new(["bla="]), proxy
     end
+
+    it "resolves nested calls after group assignment" do
+      subject.lookup_path Configurate::SettingPath.new(["find_me", "later="]), {"a" => "b"}
+      expect(subject.lookup_path Configurate::SettingPath.new(["find_me", "later", "a"])).to eq "b"
+    end
   end
 end
