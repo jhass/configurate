@@ -18,40 +18,40 @@ module Configurate
       @lookup_chain = lookup_chain
       @setting_path = SettingPath.new
     end
-    
+
     def !
       !target
     end
-    
+
     [:!=, :==, :eql?].each do |method|
       define_method method do |other|
         target.public_send method, target_or_object(other)
       end
     end
-    
+
     def _proxy?
       true
     end
-    
+
     def respond_to? method, include_private=false
       method == :_proxy? || target_respond_to?(method, include_private)
     end
-    
+
     def send *args, &block
       __send__(*args, &block)
     end
     alias_method :public_send, :send
-    
+
     def method_missing setting, *args, &block
       return target.public_send(setting, *args, &block) if target_respond_to? setting
 
       @setting_path << setting
-      
-      return target(*args) if @setting_path.is_question_or_setter?
-      
+
+      return target(*args) if @setting_path.question_action_or_setter?
+
       self
     end
-    
+
     # Get the setting at the current path, if found.
     # (see LookupChain#lookup)
     def target *args
@@ -60,7 +60,7 @@ module Configurate
       @lookup_chain.lookup @setting_path, *args
     end
     alias_method :get, :target
-    
+
     private
     COMMON_KEY_NAMES = [:key, :method]
 

@@ -5,7 +5,7 @@ module Configurate
     def initialize
       @provider = []
     end
-    
+
     # Adds a provider to the chain. Providers are tried in the order
     # they are added, so the order is important.
     #
@@ -17,11 +17,11 @@ module Configurate
       unless provider.respond_to?(:instance_methods) && provider.instance_methods.include?(:lookup)
         raise ArgumentError, "the given provider does not respond to lookup"
       end
-      
+
       @provider << provider.new(*args)
     end
-    
-    
+
+
     # Tries all providers in the order they were added to provide a response
     # for setting.
     #
@@ -37,13 +37,13 @@ module Configurate
           return special_value_or_string(provider.lookup(setting.clone, *args))
         rescue SettingNotFoundError; end
       end
-      
+
       nil
     end
     alias_method :[], :lookup
-    
-    private 
-    
+
+    private
+
     def special_value_or_string(value)
       if [TrueClass, FalseClass, NilClass, Array, Hash].include?(value.class)
         return value

@@ -1,3 +1,9 @@
+# 0.2.0
+
+* Dynamic provider listens to reset_dynamic! message and forgets all settings on it.
+* Calls ending in ! call the providers directly.
+* Added SettingPath#action?, remove is_ prefix from SettingPath methods.
+
 # 0.1.0
 
 * Dynamic provider resolves nested assignments

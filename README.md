@@ -80,7 +80,7 @@ Ruby does not allow to metaprogram `false`, thus something like
 puts "yep" if Config.enable_stuff
 ```
 
-always outputs `yep`. The workaround is to append `.get` or `?` to get the
+always outputs `yep`. The workaround is to append `.get`, or `?` to get the
 real value:
 
 ```ruby
@@ -156,14 +156,15 @@ the following optional parameters, as a hash:
 
 ### Configurate::Provider::Dynamic
 
-A provider which stores the first additonal parameter if the query string ends with an equal sign and can
-return it later. This is mainly useful for testing but can be useful to temporarily overide stuff
-too. To clarify a small example:
+A provider which stores the first additional parameter if the query string ends with an equal sign and can
+return it later. This is mainly useful for testing but can be useful to temporarily override stuff too. To clarify a small example:
 
 ```ruby
 Config.foo.bar         # => nil
 Config.foo.bar = "baz"
 Config.foo.bar         # => "baz"
+Config.reset_dynamic!
+Config.foo.bar         # => nil
 ```
 
 ## Writing a provider

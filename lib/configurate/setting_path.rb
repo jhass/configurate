@@ -19,17 +19,22 @@ module Configurate
     def_delegators :@path, :empty?, :length, :size, :hsh
 
     # Whether the current path looks like a question or setter method
-    def is_question_or_setter?
-      is_question? || is_setter?
+    def question_action_or_setter?
+      question? || action? || setter?
     end
 
     # Whether the current path looks like a question method
-    def is_question?
+    def question?
       @path.last.to_s.end_with?("?")
     end
 
+    # Whether the current path looks like an action method
+    def action?
+      @path.last.to_s.end_with?("!")
+    end
+
     # Whether the current path looks like a setter method
-    def is_setter?
+    def setter?
       @path.last.to_s.end_with?("=")
     end
 
@@ -61,7 +66,7 @@ module Configurate
     end
 
     def inspect
-      "<SettingPath:#{object_id.to_s(16)} path=#{to_s}:#{@path.object_id.to_s(16)} setter=#{is_setter?} question=#{is_question?}>"
+      "<SettingPath:#{object_id.to_s(16)} path=#{to_s}:#{@path.object_id.to_s(16)} question=#{question?} action=#{action?} setter=#{setter?}>"
     end
 
     private

@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Configurate::SettingPath do
   let(:normal_path) { described_class.new([:foo]) }
   let(:question_path) { described_class.new([:foo?]) }
+  let(:action_path) { described_class.new([:foo!]) }
   let(:setter_path) { described_class.new([:foo=]) }
   let(:long_path) { described_class.new(["foo", "bar?"]) }
 
@@ -14,26 +15,38 @@ describe Configurate::SettingPath do
     end
   end
 
-  describe "#is_question?" do
+  describe "#question?" do
     context "with a question signature as setting" do
-      subject { question_path.is_question? }
+      subject { question_path.question? }
       it { should be_truthy }
     end
 
     context "with a normal path as setting" do
-      subject { normal_path.is_question? }
+      subject { normal_path.question? }
       it { should be_falsey }
     end
   end
 
-  describe "#is_setter?" do
-    context "with a setter signature as setting" do
-      subject { setter_path.is_setter? }
+  describe "#action?" do
+    context "with a action signature as setting" do
+      subject { action_path.action? }
       it { should be_truthy }
     end
 
     context "with a normal path as setting" do
-      subject { normal_path.is_setter? }
+      subject { normal_path.action? }
+      it { should be_falsey }
+    end
+  end
+
+  describe "#setter?" do
+    context "with a setter signature as setting" do
+      subject { setter_path.setter? }
+      it { should be_truthy }
+    end
+
+    context "with a normal path as setting" do
+      subject { normal_path.setter? }
       it { should be_falsey }
     end
   end
@@ -49,19 +62,24 @@ describe Configurate::SettingPath do
   end
 
 
-  describe "#is_question_or_setter?" do
+  describe "#question_action_or_setter?" do
     context "with a question signature as setting" do
-      subject { question_path.is_question_or_setter? }
+      subject { question_path.question_action_or_setter? }
+      it { should be_truthy }
+    end
+
+    context "with an action signature as setting" do
+      subject { action_path.question_action_or_setter? }
       it { should be_truthy }
     end
 
     context "with a setter signature as setting" do
-      subject { setter_path.is_question_or_setter? }
+      subject { setter_path.question_action_or_setter? }
       it { should be_truthy }
     end
 
     context "with a normal path as setting" do
-      subject { normal_path.is_question_or_setter? }
+      subject { normal_path.question_action_or_setter? }
       it { should be_falsey }
     end
   end

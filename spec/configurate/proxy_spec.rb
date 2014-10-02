@@ -23,6 +23,11 @@ describe Configurate::Proxy do
       proxy.method_missing(:enable?)
     end
 
+    it "calls #target if the method ends with a !" do
+      expect(lookup_chain).to receive(:lookup).and_return(false)
+      proxy.method_missing(:do_it!)
+    end
+
     it "calls #target if the method ends with a =" do
       expect(lookup_chain).to receive(:lookup).and_return(false)
       proxy.method_missing(:url=)

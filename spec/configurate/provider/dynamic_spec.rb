@@ -23,5 +23,11 @@ describe Configurate::Provider::Dynamic do
       subject.lookup_path Configurate::SettingPath.new(["find_me", "later="]), {"a" => "b"}
       expect(subject.lookup_path Configurate::SettingPath.new(["find_me", "later", "a"])).to eq "b"
     end
+
+    it "clears out all overrides on reset_dynamic!" do
+      subject.lookup_path Configurate::SettingPath.new(["find_me", "later="]), "there"
+      subject.lookup_path Configurate::SettingPath.new(["reset_dynamic!"])
+      expect(subject.lookup_path Configurate::SettingPath.new(["find_me", "later"]) ).to_not eq "there"
+    end
   end
 end
