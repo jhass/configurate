@@ -36,7 +36,9 @@ module Configurate
       :to_ary => :to_a
     }.each do |method, converter|
       define_method method do
-        target.public_send converter
+        value = target
+        return value.public_send converter if value.respond_to? converter
+        value.public_send method
       end
     end
 
