@@ -23,9 +23,20 @@ module Configurate
       !target
     end
 
-    [:!=, :==, :eql?].each do |method|
+    [:!=, :==, :eql?, :coerce].each do |method|
       define_method method do |other|
         target.public_send method, target_or_object(other)
+      end
+    end
+
+    {
+      :to_int => :to_i,
+      :to_hash => :to_h,
+      :to_str => :to_s,
+      :to_ary => :to_a
+    }.each do |method, converter|
+      define_method method do
+        target.public_send converter
       end
     end
 

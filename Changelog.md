@@ -3,6 +3,7 @@
 * Dynamic provider listens to reset_dynamic! message and forgets all settings on it.
 * Calls ending in ! call the providers directly.
 * Added SettingPath#action?, remove is_ prefix from SettingPath methods.
+* Add implicit converters to Proxy that call the explicit converters.
 
 # 0.1.0
 

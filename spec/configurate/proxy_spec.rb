@@ -6,7 +6,7 @@ describe Configurate::Proxy do
 
   describe "in case statements" do
     it "acts like the target" do
-      pending "If anyone knows a way to overwrite ===, please tell me :P"
+      pending "If anyone knows a sane way to overwrite Module#===, please tell me :P"
       result = case proxy
                when String
                 "string"
@@ -54,7 +54,7 @@ describe Configurate::Proxy do
   end
 
   describe "#target" do
-    [:to_str, :to_s, :to_xml, :respond_to?, :present?, :!=, :eql?,
+    [:to_s, :to_xml, :respond_to?, :present?, :!=, :eql?,
      :each, :try, :size, :length, :count, :==, :=~, :gsub, :blank?, :chop,
      :start_with?, :end_with?].each do |method|
       it "is called for accessing #{method} on the proxy" do
@@ -76,6 +76,26 @@ describe Configurate::Proxy do
 
     it "returns nil if no setting is given" do
       expect(proxy.target).to be_nil
+    end
+
+    it "converts to a string" do
+      allow(lookup_chain).to receive(:lookup).and_return("bar")
+      expect("foo"+proxy.something).to eq "foobar"
+    end
+
+    it "converts to a number" do
+      allow(lookup_chain).to receive(:lookup).and_return(1)
+      expect(2+proxy.something).to eq 3
+    end
+
+    it "converts to an array" do
+      allow(lookup_chain).to receive(:lookup).and_return([1, 2])
+      expect([:a, :b].zip(proxy.something)).to eq [[:a, 1], [:b, 2]]
+    end
+
+    it "converts to a hash" do
+      allow(lookup_chain).to receive(:lookup).and_return({:a => :b})
+      expect({c: :d}.merge(proxy.something)).to eq({:a => :b, :c => :d})
     end
   end
 end
