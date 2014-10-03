@@ -3,11 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Configurate by Jonne Haß</title>
+    <title>Configurate by jhass</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -16,56 +15,58 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1 class="header">Configurate</h1>
-        <p class="header">A flexible configuration system</p>
+        <h1>Configurate</h1>
+        <p>A flexible configuration system</p>
+
+        <p class="view"><a href="https://github.com/jhass/configurate">View the Project on GitHub <small>jhass/configurate</small></a></p>
+
 
         <ul>
-          <li class="download"><a class="buttons" href="https://rubygems.org/gems/configurate">RubyGems</a></li>
-          <li><a class="buttons github" href="https://github.com/MrZYX/configurate">View On GitHub</a></li>
+          <li><a href="https://github.com/jhass/configurate/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/jhass/configurate/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/jhass/configurate">View On <strong>GitHub</strong></a></li>
         </ul>
-
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/MrZYX">Jonne Haß</a></p>
-
-
       </header>
       <section>
-        <h1>Configurate - A flexible configuration system</h1>
+        <h1>
+<a name="configurate---a-flexible-configuration-system" class="anchor" href="#configurate---a-flexible-configuration-system"><span class="octicon octicon-link"></span></a>Configurate - A flexible configuration system</h1>
 
-<p>
-<a href="https://rubygems.org/gems/configurate"><img src="https://badge.fury.io/rb/configurate.png" alt="Released version"></a>
-<a href="https://travis-ci.org/MrZYX/configurate"><img src="https://secure.travis-ci.org/MrZYX/configurate.png?branch=master" alt="Build Status"></a>
+<p><a href="https://rubygems.org/gems/configurate"><img src="https://badge.fury.io/rb/configurate.png" alt="Gem Version"></a>
+<a href="https://travis-ci.org/jhass/configurate"><img src="https://secure.travis-ci.org/jhass/configurate.png?branch=master" alt="Build Status"></a>
 <a href="https://gemnasium.com/MrZYX/configurate"><img src="https://gemnasium.com/MrZYX/configurate.png" alt="Gemnasium"></a>
-<a href="https://codeclimate.com/github/MrZYX/configurate"><img src="https://codeclimate.com/github/MrZYX/configurate.png" alt="Code Climate"></a>
-<a href="https://coveralls.io/r/MrZYX/configurate"><img src="https://coveralls.io/repos/MrZYX/configurate/badge.png?branch=master" alt="Coverage Status"></a></p>
+<a href="https://codeclimate.com/github/MrZYX/configurate"><img src="https://codeclimate.com/github/jhass/configurate.png" alt="Code Climate"></a>
+<a href="https://coveralls.io/r/MrZYX/configurate"><img src="https://coveralls.io/repos/jhass/configurate/badge.png?branch=master" alt="Coverage Status"></a></p>
 
 <p>Configurate allows you to specify a chain of configuration providers which are
 queried in order until one returns a value. This allows scenarios like overriding
-settings your default settings with a user configuration file and let those be overridden
+your default settings with a user configuration file and let those be overridden
 by environment variables. The query interface allows to group and nest your configuration options
 to a practically unlimited level.</p>
 
 <p>Configurate works with Ruby 1.9.2 or later.</p>
 
-<h2>Installation</h2>
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>Just add</p>
 
-<div class="highlight"><pre><span class="n">gem</span> <span class="s1">'configurate'</span>
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s1">'configurate'</span>
 </pre></div>
 
 <p>to your <code>Gemfile</code>.</p>
 
-<h2>Usage</h2>
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
 <p>A basic loader could look like this:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'configurate'</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'configurate'</span>
 
-<span class="no">Config</span> <span class="o">=</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Settings</span><span class="o">.</span><span class="n">create</span> <span class="k">do</span>
-  <span class="n">add_provider</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">Env</span>
-  <span class="n">add_provider</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'/etc/app_settings.yml'</span><span class="p">,</span>
+<span class="no">Config</span> <span class="o">=</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Settings</span><span class="o">.</span><span class="n">create</span> <span class="k">do</span>
+  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Env</span>
+  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'/etc/app_settings.yml'</span><span class="p">,</span>
                <span class="ss">namespace</span><span class="p">:</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="ss">required</span><span class="p">:</span> <span class="kp">false</span>
-  <span class="n">add_provider</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'config/default_settings.yml'</span>
+  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'config/default_settings.yml'</span>
 <span class="k">end</span>
 
 <span class="c1"># Somewhere later</span>
@@ -80,11 +81,11 @@ by calling <code>extend YourConfigurationMethods</code> inside the block passed 
 <p>Providers are called in the order they're added. You can already use the added providers to
 determine if further ones should be added:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'configurate'</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'configurate'</span>
 
-<span class="no">Config</span> <span class="o">=</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Settings</span><span class="o">.</span><span class="n">create</span> <span class="k">do</span>
-  <span class="n">add_provider</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">Env</span>
-  <span class="n">add_provider</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'config/settings.yml'</span> <span class="k">unless</span> <span class="n">heroku?</span>
+<span class="no">Config</span> <span class="o">=</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Settings</span><span class="o">.</span><span class="n">create</span> <span class="k">do</span>
+  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Env</span>
+  <span class="n">add_provider</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">YAML</span><span class="p">,</span> <span class="s1">'config/settings.yml'</span> <span class="k">unless</span> <span class="n">heroku?</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -92,33 +93,36 @@ determine if further ones should be added:</p>
 It takes a constant and parameters that should be passed to the initializer.</p>
 
 <p>A providers only requirement is that it responds to the <code>#lookup</code> method. <code>#lookup</code> is passed the current
-<code>SettingPath</code>, for example for a call to <code>Config.foo.bar.baz?</code> it gets a path with the items <code>'foo'</code>, <code>'bar'</code>, <code>baz'</code> passed. <code>SettingPath</code> behaves like <code>Array</code> with some methods added.
+<code>SettingPath</code>, for example for a call to <code>Config.foo.bar.baz?</code> it gets a path with the items <code>'foo'</code>, <code>'bar'</code>, <code>'baz'</code> passed. <code>SettingPath</code> behaves like <code>Array</code> with some methods added.
 The provider should raise <code>Configurate::SettingNotFoundError</code> if it can't provide a value for the requested option.
 Any additional parameters are passed along to the provider, thus a <code>#lookup</code> method must be able to take
 any number of additional parameters.</p>
 
 <p>You're not limited to one instance of the configuration object.</p>
 
-<h2>Gotchas</h2>
+<h2>
+<a name="gotchas" class="anchor" href="#gotchas"><span class="octicon octicon-link"></span></a>Gotchas</h2>
 
-<h3>False</h3>
+<h3>
+<a name="false" class="anchor" href="#false"><span class="octicon octicon-link"></span></a>False</h3>
 
 <p>Ruby does not allow to metaprogram <code>false</code>, thus something like</p>
 
-<div class="highlight"><pre><span class="nb">puts</span> <span class="s2">"yep"</span> <span class="k">if</span> <span class="no">Config</span><span class="o">.</span><span class="n">enable_stuff</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">puts</span> <span class="s2">"yep"</span> <span class="k">if</span> <span class="no">Config</span><span class="o">.</span><span class="n">enable_stuff</span>
 </pre></div>
 
-<p>always outputs <code>yep</code>. The workaround is to append <code>.get</code> or <code>?</code> to get the
+<p>always outputs <code>yep</code>. The workaround is to append <code>.get</code>, or <code>?</code> to get the
 real value:</p>
 
-<div class="highlight"><pre><span class="nb">puts</span> <span class="s2">"yep"</span> <span class="k">if</span> <span class="no">Config</span><span class="o">.</span><span class="n">enable_stuff?</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">puts</span> <span class="s2">"yep"</span> <span class="k">if</span> <span class="no">Config</span><span class="o">.</span><span class="n">enable_stuff?</span>
 </pre></div>
 
-<h3>Module#===</h3>
+<h3>
+<a name="module" class="anchor" href="#module"><span class="octicon octicon-link"></span></a>Module#===</h3>
 
 <p>Another thing you can't overwrite in Ruby is the <code>===</code> operator, rendering case statements useless</p>
 
-<div class="highlight"><pre><span class="nb">puts</span> <span class="k">case</span> <span class="no">Config</span><span class="o">.</span><span class="n">some</span><span class="o">.</span><span class="n">setting</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">puts</span> <span class="k">case</span> <span class="no">Config</span><span class="o">.</span><span class="n">some</span><span class="o">.</span><span class="n">setting</span>
      <span class="k">when</span> <span class="no">NilClass</span>
        <span class="s2">"nil"</span>
      <span class="k">when</span> <span class="nb">String</span>
@@ -130,9 +134,11 @@ real value:</p>
 
 <p>will always output <code>unknown</code>. Again use <code>.get</code></p>
 
-<h2>Shipped providers</h2>
+<h2>
+<a name="shipped-providers" class="anchor" href="#shipped-providers"><span class="octicon octicon-link"></span></a>Shipped providers</h2>
 
-<h3>Configurate::Provider::Base</h3>
+<h3>
+<a name="configurateproviderbase" class="anchor" href="#configurateproviderbase"><span class="octicon octicon-link"></span></a>Configurate::Provider::Base</h3>
 
 <p>A convenience base class changing the interface for implementers. It provides a basic <code>#lookup</code> method
 which just passes all parameters through to <code>#lookup_path</code>.
@@ -140,7 +146,8 @@ The result of <code>#lookup_path</code> is returned, unless it's <code>nil</code
 then <code>Configurate::SettingNotFoundError</code> is raised. Subclasses are expected to implement <code>#lookup_path</code>.
 Do not use this class directly as a provider!</p>
 
-<h3>Configurate::Provider::Env</h3>
+<h3>
+<a name="configurateproviderenv" class="anchor" href="#configurateproviderenv"><span class="octicon octicon-link"></span></a>Configurate::Provider::Env</h3>
 
 <p>This class transforms a query string into a name for a environment variable and looks up this variable then.
 The conversion scheme is the following: Convert to uppercase, join path with underscores. So for example <code>Config.foo.bar.baz</code>
@@ -149,12 +156,13 @@ into arrays.</p>
 
 <p>This provider does not take any additional initialization parameters.</p>
 
-<h3>Configurate::Provider::YAML</h3>
+<h3>
+<a name="configurateprovideryaml" class="anchor" href="#configurateprovideryaml"><span class="octicon octicon-link"></span></a>Configurate::Provider::YAML</h3>
 
 <p>This provider reads settings from a given <a href="http://www.yaml.org">YAML</a> file. It converts the sections of
 query string to a nested value. For a given YAML file</p>
 
-<div class="highlight"><pre><span class="l-Scalar-Plain">stuff</span><span class="p-Indicator">:</span>
+<div class="highlight highlight-yaml"><pre><span class="l-Scalar-Plain">stuff</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">enable</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
   <span class="l-Scalar-Plain">param</span><span class="p-Indicator">:</span> <span class="s">"foo"</span>
   <span class="l-Scalar-Plain">nested</span><span class="p-Indicator">:</span>
@@ -163,7 +171,7 @@ query string to a nested value. For a given YAML file</p>
 
 <p>the following queries would be valid:</p>
 
-<div class="highlight"><pre><span class="no">Config</span><span class="o">.</span><span class="n">stuff</span><span class="o">.</span><span class="n">enable?</span>      <span class="c1"># =&gt; true</span>
+<div class="highlight highlight-ruby"><pre><span class="no">Config</span><span class="o">.</span><span class="n">stuff</span><span class="o">.</span><span class="n">enable?</span>      <span class="c1"># =&gt; true</span>
 <span class="no">Config</span><span class="o">.</span><span class="n">stuff</span><span class="o">.</span><span class="n">param</span>        <span class="c1"># =&gt; "foo"</span>
 <span class="no">Config</span><span class="o">.</span><span class="n">stuff</span><span class="o">.</span><span class="n">nested</span><span class="o">.</span><span class="n">param</span> <span class="c1"># =&gt; "bar"</span>
 </pre></div>
@@ -179,22 +187,25 @@ the rails environment, without duplicating common settings. Defaults to none.</l
 <li>
 <em>required:</em> Whether to raise an error if the the file isn't found or, if one is given, the namespace
 doesn't exist in the file.</li>
-</ul><h3>Configurate::Provider::Dynamic</h3>
+</ul><h3>
+<a name="configurateproviderdynamic" class="anchor" href="#configurateproviderdynamic"><span class="octicon octicon-link"></span></a>Configurate::Provider::Dynamic</h3>
 
-<p>A provider which stores the first additonal parameter if the query string ends with an equal sign and can
-return it later. This is mainly useful for testing but can be useful to temporarily overide stuff
-too. To clarify a small example:</p>
+<p>A provider which stores the first additional parameter if the query string ends with an equal sign and can
+return it later. This is mainly useful for testing but can be useful to temporarily override stuff too. To clarify a small example:</p>
 
-<div class="highlight"><pre><span class="no">Config</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span>         <span class="c1"># =&gt; nil</span>
+<div class="highlight highlight-ruby"><pre><span class="no">Config</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span>         <span class="c1"># =&gt; nil</span>
 <span class="no">Config</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="s2">"baz"</span>
 <span class="no">Config</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span>         <span class="c1"># =&gt; "baz"</span>
+<span class="no">Config</span><span class="o">.</span><span class="n">reset_dynamic!</span>
+<span class="no">Config</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span>         <span class="c1"># =&gt; nil</span>
 </pre></div>
 
-<h2>Writing a provider</h2>
+<h2>
+<a name="writing-a-provider" class="anchor" href="#writing-a-provider"><span class="octicon octicon-link"></span></a>Writing a provider</h2>
 
 <p>...should be pretty easy. For example here is the <code>Configurate::Provider::Env</code> provider:</p>
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Configurate</span><span class="o">::</span><span class="ss">Provider</span><span class="p">:</span><span class="ss">:Env</span> <span class="o">&lt;</span> <span class="ss">Configurate</span><span class="p">:</span><span class="ss">:Provider</span><span class="o">::</span><span class="no">Base</span>
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Env</span> <span class="o">&lt;</span> <span class="no">Configurate</span><span class="o">::</span><span class="no">Provider</span><span class="o">::</span><span class="no">Base</span>
   <span class="k">def</span> <span class="nf">lookup_path</span><span class="p">(</span><span class="n">setting_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
     <span class="n">value</span> <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="n">setting_path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">upcase</span><span class="o">]</span>
     <span class="k">unless</span> <span class="n">value</span><span class="o">.</span><span class="n">nil?</span>
@@ -206,19 +217,22 @@ too. To clarify a small example:</p>
 <span class="k">end</span>
 </pre></div>
 
-<h2>Documentation</h2>
+<h2>
+<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
 
-<p>You can find the current documentation for the master branch <a href="http://rubydoc.info/github/MrZYX/configurate/master/frames/index">here</a>.</p>
+<p>You can find the current documentation for the master branch <a href="http://rubydoc.info/github/jhass/configurate/master/frames/index">here</a>.</p>
 
-<h2>License</h2>
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>MIT, see <a href="./LICENSE">LICENSE</a></p>
       </section>
       <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+        <p>This project is maintained by <a href="https://github.com/jhass">jhass</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>
