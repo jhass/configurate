@@ -11,7 +11,7 @@ your default settings with a user configuration file and let those be overridden
 by environment variables. The query interface allows to group and nest your configuration options
 to a practically unlimited level.
 
-Configurate works with Ruby 1.9.2 or later.
+Configurate supports Ruby 2.0 or later.
 
 ## Installation
 
