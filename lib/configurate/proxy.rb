@@ -23,17 +23,17 @@ module Configurate
       !target
     end
 
-    [:!=, :==, :eql?, :coerce].each do |method|
+    %i(!= == eql? coerce).each do |method|
       define_method method do |other|
         target.public_send method, target_or_object(other)
       end
     end
 
     {
-      :to_int => :to_i,
-      :to_hash => :to_h,
-      :to_str => :to_s,
-      :to_ary => :to_a
+      to_int:  :to_i,
+      to_hash: :to_h,
+      to_str:  :to_s,
+      to_ary:  :to_a
     }.each do |method, converter|
       define_method method do
         value = target
@@ -75,7 +75,8 @@ module Configurate
     alias_method :get, :target
 
     private
-    COMMON_KEY_NAMES = [:key, :method]
+
+    COMMON_KEY_NAMES = %i(key method)
 
     def target_respond_to? setting, include_private=false
       return false if COMMON_KEY_NAMES.include? setting

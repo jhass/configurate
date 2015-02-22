@@ -21,7 +21,6 @@ module Configurate
       @provider << provider.new(*args)
     end
 
-
     # Tries all providers in the order they were added to provide a response
     # for setting.
     #
@@ -45,19 +44,20 @@ module Configurate
     private
 
     def special_value_or_string(value)
-      if [TrueClass, FalseClass, NilClass, Array, Hash].include?(value.class)
-        return value
-      elsif value.is_a?(String)
-        return case value.strip
+      case value
+      when TrueClass, FalseClass, NilClass, Array, Hash
+        value
+      else
+        if value.respond_to?(:to_s)
+          case value.to_s.strip
           when "true" then true
           when "false" then false
           when "", "nil" then nil
-          else value
+          else value.to_s
+          end
+        else
+          value
         end
-      elsif value.respond_to?(:to_s)
-        return value.to_s
-      else
-        return value
       end
     end
   end

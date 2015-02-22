@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Configurate::SettingPath do
   let(:normal_path) { described_class.new([:foo]) }
@@ -53,14 +53,13 @@ describe Configurate::SettingPath do
 
   describe "#initialize_copy" do
     it "modifying a copy leaves the original unchanged" do
-      original = described_class.new ["foo", "bar"]
+      original = described_class.new %w(foo bar)
       copy = original.clone
       copy << "baz"
       expect(copy).to include "baz"
       expect(original).not_to include "baz"
     end
   end
-
 
   describe "#question_action_or_setter?" do
     context "with a question signature as setting" do
@@ -86,22 +85,22 @@ describe Configurate::SettingPath do
 
   describe "#each" do
     it "should strip special characters" do
-      expect(long_path.all? { |c| c.include? "?" }).to be_falsey
+      expect(long_path.all? {|c| c.include? "?" }).to be_falsey
     end
   end
 
-  [:join, :first, :last, :shift, :pop].each do |method|
+  %i(join first last shift pop).each do |method|
     describe "##{method}" do
       subject { question_path.public_send method }
       it { should_not include "?" }
     end
   end
 
-  [:<<, :unshift, :push].each do |method|
+  %i(<< unshift push).each do |method|
     describe "##{method}" do
-      it 'converts the argument to a string' do
+      it "converts the argument to a string" do
         arg = double
-        expect(arg).to receive(:to_s).and_return('bar')
+        expect(arg).to receive(:to_s).and_return("bar")
         described_class.new.public_send method, arg
       end
     end
@@ -120,7 +119,7 @@ describe Configurate::SettingPath do
 
   describe "#inspect" do
     it "includes the dotted path" do
-      path = described_class.new([:foo, :bar])
+      path = described_class.new(%i(foo bar))
       expect(path.inspect).to include "foo.bar"
     end
   end

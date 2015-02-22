@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Configurate::Settings do
   describe "#method_missing" do
@@ -12,7 +12,7 @@ describe Configurate::Settings do
     end
   end
 
-  [:lookup, :add_provider, :[]].each do |method|
+  %i(lookup add_provider []).each do |method|
     describe "#{method}" do
       subject { described_class.create }
 

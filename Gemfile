@@ -1,20 +1,22 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'coveralls', require: false, group: :coverage
+gem "coveralls", require: false, group: :coverage
 
-group :doc do
-  gem 'yard', require: false
-  gem 'redcarpet', require: false
+group :development do
+  gem "guard-rspec"
+  gem "guard-yard"
+  gem "guard-rubocop"
+  gem "rubocop", require: false
 end
 
-group :build do
-  gem 'bundler'
-  gem 'rubygems-openpgp'
+group :doc do
+  gem "yard", require: false
+  gem "redcarpet", require: false
 end
 
 platform :rbx do
-  gem 'psych'
-  gem 'rubysl-singleton'
+  gem "psych"
+  gem "rubysl-singleton"
 end
 
 gemspec

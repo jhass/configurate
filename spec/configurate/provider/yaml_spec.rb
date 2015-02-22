@@ -1,11 +1,14 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Configurate::Provider::YAML do
-  let(:settings) { {"toplevel" => "bar",
-                    "some" => {
-                      "nested" => { "some" => "lala", "setting" => "foo"}
-                    }
-                   } }
+  let(:settings) {
+    {
+      "toplevel" => "bar",
+      "some"     => {
+        "nested" => {"some" => "lala", "setting" => "foo"}
+      }
+    }
+  }
 
   describe "#initialize" do
     it "loads the file" do
@@ -23,26 +26,25 @@ describe Configurate::Provider::YAML do
       }.to raise_error Errno::ENOENT
     end
 
-
     context "with a namespace" do
       it "looks in the file for that namespace" do
         namespace = "some.nested"
         allow(::YAML).to receive(:load_file).and_return(settings)
-        provider = described_class.new 'bla', namespace: namespace
-        expect(provider.instance_variable_get :@settings).to eq settings['some']['nested']
+        provider = described_class.new "bla", namespace: namespace
+        expect(provider.instance_variable_get :@settings).to eq settings["some"]["nested"]
       end
 
       it "raises if the namespace isn't found" do
         allow(::YAML).to receive(:load_file).and_return({})
         expect {
-          described_class.new 'bla', namespace: "bar"
+          described_class.new "bla", namespace: "bar"
         }.to raise_error
       end
 
       it "works with an empty namespace in the file" do
-        allow(::YAML).to receive(:load_file).and_return({'foo' => {'bar' => nil}})
+        allow(::YAML).to receive(:load_file).and_return("foo" => {"bar" => nil})
         expect {
-          described_class.new 'bla', namespace: "foo.bar"
+          described_class.new "bla", namespace: "foo.bar"
         }.to_not raise_error
       end
     end
@@ -58,7 +60,7 @@ describe Configurate::Provider::YAML do
       it "doesn't raise if a namespace isn't found" do
         allow(::YAML).to receive(:load_file).and_return({})
         expect {
-          described_class.new 'bla', namespace: "foo", required: false
+          described_class.new "bla", namespace: "foo", required: false
         }.not_to raise_error
       end
     end
@@ -67,11 +69,11 @@ describe Configurate::Provider::YAML do
   describe "#lookup_path" do
     before do
       allow(::YAML).to receive(:load_file).and_return(settings)
-      @provider = described_class.new 'dummy'
+      @provider = described_class.new "dummy"
     end
 
     it "looks up the whole nesting" do
-      expect(@provider.lookup_path ["some", "nested", "some"]).to eq settings["some"]["nested"]["some"]
+      expect(@provider.lookup_path %w(some nested some)).to eq settings["some"]["nested"]["some"]
     end
 
     it "returns nil if no setting is found" do

@@ -5,13 +5,12 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-
 begin
-  require 'coveralls'
+  require "coveralls"
   Coveralls.wear!
 rescue LoadError; end
 
-require 'configurate'
+require "configurate"
 
 def silence_stderr
   $stderr = StringIO.new
@@ -27,7 +26,7 @@ RSpec.configure do |config|
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
   #     --seed 1234
-  config.order = 'random'
+  config.order = "random"
 
   config.expect_with :rspec do |expect_config|
     expect_config.syntax = :expect

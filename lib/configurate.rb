@@ -1,10 +1,9 @@
-require 'forwardable'
+require "forwardable"
 
-require 'configurate/setting_path'
-require 'configurate/lookup_chain'
-require 'configurate/provider'
-require 'configurate/proxy'
-
+require "configurate/setting_path"
+require "configurate/lookup_chain"
+require "configurate/provider"
+require "configurate/proxy"
 
 # A flexible and extendable configuration system.
 # The calling logic is isolated from the lookup logic
@@ -20,15 +19,15 @@ require 'configurate/proxy'
 module Configurate
   # This is your main entry point. Instead of lengthy explanations
   # let an example demonstrate its usage:
-  # 
+  #
   #     require 'configuration_methods'
-  #     
+  #
   #     AppSettings = Configurate::Settings.create do
   #       add_provider Configurate::Provider::Env
   #       add_provider Configurate::Provider::YAML, '/etc/app_settings.yml',
   #                    namespace: Rails.env, required: false
   #       add_provider Configurate::Provider::YAML, 'config/default_settings.yml'
-  #       
+  #
   #       extend YourConfigurationMethods
   #     end
   #
@@ -36,18 +35,17 @@ module Configurate
   #
   # Please also read the note at {Proxy}!
   class Settings
-  
     attr_reader :lookup_chain
-    
+
     undef_method :method # Remove possible conflicts with common setting names
 
     extend Forwardable
 
     def initialize
       @lookup_chain = LookupChain.new
-      $stderr.puts "Warning you called Configurate::Settings.new with a block, you really meant to call #create" if block_given?
+      warn "Warning you called Configurate::Settings.new with a block, you really meant to call #create" if block_given?
     end
-    
+
     # @!method lookup(setting)
     # (see {LookupChain#lookup})
 
@@ -63,15 +61,15 @@ module Configurate
     def method_missing(method, *args, &block)
       Proxy.new(@lookup_chain).public_send(method, *args, &block)
     end
-    
+
     # Create a new configuration object
     # @yield the given block will be evaluated in the context of the new object
     def self.create(&block)
-      config = self.new
+      config = new
       config.instance_eval(&block) if block_given?
       config
     end
   end
-  
+
   class SettingNotFoundError < RuntimeError; end
 end

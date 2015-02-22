@@ -1,8 +1,8 @@
-require 'spec_helper'
+require "spec_helper"
 
 class InvalidConfigurationProvider; end
 class ValidConfigurationProvider
-  def lookup(setting, *args); end
+  def lookup(_setting, *_args); end
 end
 
 describe Configurate::LookupChain do
@@ -97,7 +97,7 @@ describe Configurate::LookupChain do
     end
 
     it "returns nil if no value is found" do
-      @provider.each { |p| allow(p).to receive(:lookup).and_raise(Configurate::SettingNotFoundError) }
+      @provider.each {|p| allow(p).to receive(:lookup).and_raise(Configurate::SettingNotFoundError) }
       expect(subject.lookup "not.me").to be_nil
     end
   end

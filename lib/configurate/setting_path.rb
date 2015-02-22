@@ -1,4 +1,4 @@
-require 'forwardable'
+require "forwardable"
 
 module Configurate
   # Class encapsulating the concept of a path to a setting
@@ -45,13 +45,13 @@ module Configurate
       end
     end
 
-    [:join, :first, :last, :shift, :pop].each do |method|
+    %i(join first last shift pop).each do |method|
       define_method method do |*args|
         clean_special_characters @path.public_send(method, *args)
       end
     end
 
-    [:<<, :unshift, :push].each do |method|
+    %i(<< unshift push).each do |method|
       define_method method do |*args|
         @path.public_send method, *args.map(&:to_s)
       end
@@ -66,7 +66,11 @@ module Configurate
     end
 
     def inspect
-      "<SettingPath:#{object_id.to_s(16)} path=#{to_s}:#{@path.object_id.to_s(16)} question=#{question?} action=#{action?} setter=#{setter?}>"
+      "<SettingPath:#{object_id.to_s(16)} "\
+      "path=#{self}:#{@path.object_id.to_s(16)} "\
+      "question=#{question?} "\
+      "action=#{action?} "\
+      "setter=#{setter?}>"
     end
 
     private
