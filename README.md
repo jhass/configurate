@@ -1,9 +1,9 @@
 # Configurate - A flexible configuration system
 [![Gem Version](https://badge.fury.io/rb/configurate.png)](https://rubygems.org/gems/configurate)
 [![Build Status](https://secure.travis-ci.org/jhass/configurate.png?branch=master)](https://travis-ci.org/jhass/configurate)
-[![Gemnasium](https://gemnasium.com/MrZYX/configurate.png)](https://gemnasium.com/MrZYX/configurate)
-[![Code Climate](https://codeclimate.com/github/jhass/configurate.png)](https://codeclimate.com/github/MrZYX/configurate)
-[![Coverage Status](https://coveralls.io/repos/jhass/configurate/badge.png?branch=master)](https://coveralls.io/r/MrZYX/configurate)
+[![Gemnasium](https://gemnasium.com/jhass/configurate.png)](https://gemnasium.com/jhass/configurate)
+[![Code Climate](https://codeclimate.com/github/jhass/configurate.png)](https://codeclimate.com/github/jhass/configurate)
+[![Coverage Status](https://coveralls.io/repos/jhass/configurate/badge.svg?branch=master)](https://coveralls.io/r/jhass/configurate?branch=master)
 
 Configurate allows you to specify a chain of configuration providers which are
 queried in order until one returns a value. This allows scenarios like overriding
