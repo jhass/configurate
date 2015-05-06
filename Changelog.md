@@ -1,3 +1,8 @@
+# 0.3.1
+
+* Configurate::Provider::Dynamic returns true when passed the special
+ `reset_dynamic!` call.
+
 # 0.3.0
 
 * Add new exception: Configurate::MissingSetting to be raised and bubble up to the user

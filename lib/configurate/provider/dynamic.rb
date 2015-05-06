@@ -10,7 +10,7 @@ module Configurate
       def lookup_path(setting_path, *args)
         if setting_path.to_s == "reset_dynamic!"
           @settings = nil
-          return
+          return true
         end
 
         if setting_path.setter? && args.length > 0
