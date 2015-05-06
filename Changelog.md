@@ -1,3 +1,10 @@
+# 0.3.0
+
+* Add new exception: Configurate::MissingSetting to be raised and bubble up to the user
+  if a setting wasn't found and the user requested to be informed.
+* Configurate::Provider::YAML got the new option raise_on_missing to raise
+  Configurate::MissingSetting if the requested key is not in the YAML document.
+
 # 0.2.0
 
 * Dynamic provider listens to reset_dynamic! message and forgets all settings on it.

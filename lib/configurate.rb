@@ -71,5 +71,12 @@ module Configurate
     end
   end
 
+  # This is supposed to be raised by providers if the requested setting
+  # does not exist, (remember, nil is a valid value and thus rarely a sufficient check)
+  # and this should be communicated to the end user.
+  class MissingSetting < RuntimeError; end
+
+  # This is supposed to be raised by providers if the requested setting
+  # cannot be found and the next provider in the chain should be tried.
   class SettingNotFoundError < RuntimeError; end
 end

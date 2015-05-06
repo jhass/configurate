@@ -8,11 +8,15 @@ module Configurate
       # @param file [String] the path to the file
       # @param opts [Hash]
       # @option opts [String] :namespace optionally set this as the root
-      # @option opts [Boolean] :required wheter or not to raise an error if
+      # @option opts [Boolean] :required whether or not to raise an error if
       #   the file or the namespace, if given, is not found. Defaults to +true+.
+      # @option opts [Boolean] :raise_on_missing whether to raise
+      #   {Configurate::MissingSetting} if a setting can't be provided.
+      #   Defaults to +false+.
       # @raise [ArgumentError] if the namespace isn't found in the file
       # @raise [Errno:ENOENT] if the file isn't found
       def initialize file, opts={}
+        @raise_on_missing = opts.fetch :raise_on_missing, false
         @settings = {}
         required = opts.delete(:required) { true }
 
@@ -27,12 +31,15 @@ module Configurate
           end
         end
       rescue Errno::ENOENT => e
-        $stderr.puts "WARNING: Configuration file #{file} not found, ensure it's present"
+        warn "WARNING: Configuration file #{file} not found, ensure it's present"
         raise e if required
       end
 
       def lookup_path setting_path, *_
-        Provider.lookup_in_hash(setting_path, @settings)
+        Provider.lookup_in_hash(setting_path, @settings) {
+          raise MissingSetting.new "#{setting_path} is not a valid setting." if @raise_on_missing
+          nil
+        }
       end
     end
   end

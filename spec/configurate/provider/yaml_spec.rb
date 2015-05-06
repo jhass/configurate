@@ -79,5 +79,21 @@ describe Configurate::Provider::YAML do
     it "returns nil if no setting is found" do
       expect(@provider.lookup_path ["not_me"]).to be_nil
     end
+
+    context "with raise_on_missing set to true" do
+      before do
+        @provider = described_class.new "dummy", raise_on_missing: true
+      end
+
+      it "looks up the whole nesting" do
+        expect(@provider.lookup_path %w(some nested some)).to eq settings["some"]["nested"]["some"]
+      end
+
+      it "returns nil if no setting is found" do
+        expect {
+          @provider.lookup_path ["not_me"]
+        }.to raise_error Configurate::MissingSetting
+      end
+    end
   end
 end

@@ -15,5 +15,17 @@ describe Configurate::Provider::Base do
         subject.lookup("bla")
       }.to raise_error Configurate::SettingNotFoundError
     end
+
+  end
+
+  describe "::lookup_in_hash" do
+    let(:hash) { {foo: {bar: nil}} }
+    it "returns nil if key is nil" do
+      expect(Configurate::Provider.lookup_in_hash(%i(foo bar), hash) { :fallback }).to be_nil
+    end
+
+    it "returns fallback for a non-existent key" do
+      expect(Configurate::Provider.lookup_in_hash(%i(foo bar baz), hash) { :fallback }).to eq :fallback
+    end
   end
 end
