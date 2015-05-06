@@ -6,23 +6,19 @@ module Configurate
     # in it.
     class YAML < Base
       # @param file [String] the path to the file
-      # @param opts [Hash]
-      # @option opts [String] :namespace optionally set this as the root
-      # @option opts [Boolean] :required whether or not to raise an error if
+      # @param namespace [String] optionally set this as the root
+      # @param required [Boolean] whether or not to raise an error if
       #   the file or the namespace, if given, is not found. Defaults to +true+.
-      # @option opts [Boolean] :raise_on_missing whether to raise
-      #   {Configurate::MissingSetting} if a setting can't be provided.
-      #   Defaults to +false+.
+      # @param raise_on_missing [Boolean]  whether to raise {Configurate::MissingSetting}
+      #   if a setting can't be provided. Defaults to +false+.
       # @raise [ArgumentError] if the namespace isn't found in the file
       # @raise [Errno:ENOENT] if the file isn't found
-      def initialize file, opts={}
-        @raise_on_missing = opts.fetch :raise_on_missing, false
+      def initialize file, namespace: nil, required: true, raise_on_missing: false
+        @raise_on_missing = raise_on_missing
         @settings = {}
-        required = opts.delete(:required) { true }
 
         @settings = ::YAML.load_file(file)
 
-        namespace = opts.delete(:namespace)
         unless namespace.nil?
           @settings = Provider.lookup_in_hash(SettingPath.new(namespace), @settings) do
             raise ArgumentError, "Namespace #{namespace} not found in #{file}" if required
