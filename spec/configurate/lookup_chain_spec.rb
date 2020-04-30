@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 class InvalidConfigurationProvider; end
@@ -71,34 +73,34 @@ describe Configurate::LookupChain do
 
     it "converts numbers to strings" do
       allow(@provider[0]).to receive(:lookup).and_return(5)
-      expect(subject.lookup "foo").to eq "5"
+      expect(subject.lookup("foo")).to eq "5"
     end
 
     it "does not convert false to a string" do
       allow(@provider[0]).to receive(:lookup).and_return(false)
-      expect(subject.lookup "enable").to be_falsey
+      expect(subject.lookup("enable")).to be_falsey
     end
 
     it "converts 'true' to true" do
       allow(@provider[0]).to receive(:lookup).and_return("true")
-      expect(subject.lookup "enable").to be_truthy
+      expect(subject.lookup("enable")).to be_truthy
     end
 
     it "converts 'false' to false" do
       allow(@provider[0]).to receive(:lookup).and_return("false")
-      expect(subject.lookup "enable").to be_falsey
+      expect(subject.lookup("enable")).to be_falsey
     end
 
     it "returns the value unchanged if it can't be converted" do
       value = double
       allow(value).to receive(:respond_to?).with(:to_s).and_return(false)
       allow(@provider[0]).to receive(:lookup).and_return(value)
-      expect(subject.lookup "enable").to eq value
+      expect(subject.lookup("enable")).to eq value
     end
 
     it "returns nil if no value is found" do
       @provider.each {|p| allow(p).to receive(:lookup).and_raise(Configurate::SettingNotFoundError) }
-      expect(subject.lookup "not.me").to be_nil
+      expect(subject.lookup("not.me")).to be_nil
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Configurate::Proxy do
@@ -54,8 +56,8 @@ describe Configurate::Proxy do
   end
 
   describe "#target" do
-    %i(to_s to_xml respond_to? present? != eql? each try size length
-       count == =~ gsub blank? chop start_with? end_with?).each do |method|
+    %i[to_s to_xml respond_to? present? != eql? each try size length
+       count == =~ gsub blank? chop start_with? end_with?].each do |method|
       it "is called for accessing #{method} on the proxy" do
         target = double(respond_to?: true, _proxy?: false)
         allow(lookup_chain).to receive(:lookup).and_return(target)
@@ -89,7 +91,7 @@ describe Configurate::Proxy do
 
     it "converts to an array" do
       allow(lookup_chain).to receive(:lookup).and_return([1, 2])
-      expect(%i(a b).zip(proxy.something)).to eq [[:a, 1], [:b, 2]]
+      expect(%i[a b].zip(proxy.something)).to eq [[:a, 1], [:b, 2]]
     end
 
     it "converts to a hash" do

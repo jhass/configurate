@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "forwardable"
 
 module Configurate
@@ -40,18 +42,19 @@ module Configurate
 
     def each
       return to_enum(:each) unless block_given?
+
       @path.each do |component|
         yield clean_special_characters(component)
       end
     end
 
-    %i(join first last shift pop).each do |method|
+    %i[join first last shift pop].each do |method|
       define_method method do |*args|
         clean_special_characters @path.public_send(method, *args)
       end
     end
 
-    %i(<< unshift push).each do |method|
+    %i[<< unshift push].each do |method|
       define_method method do |*args|
         @path.public_send method, *args.map(&:to_s)
       end

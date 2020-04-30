@@ -1,5 +1,8 @@
+AllCops:
+  NewCops: enable
+
 # Commonly used screens these days easily fit more than 80 characters.
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
 # Too short methods lead to extraction of single-use methods, which can make
@@ -13,7 +16,7 @@ Metrics/ClassLength:
 
 # No space makes the method definition shorter and differentiates
 # from a regular assignment.
-Style/SpaceAroundEqualsInParameterDefault:
+Layout/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
 
 # Single quotes being faster is hardly measurable and only affects parse time.
@@ -28,7 +31,7 @@ Style/SymbolArray:
   Enabled: true
 
 # Most readable form.
-Style/AlignHash:
+Layout/HashAlignment:
   EnforcedHashRocketStyle: table
   EnforcedColonStyle: table
 
@@ -39,7 +42,7 @@ Style/AlignHash:
 #  EnforcedStyle: ruby19_no_mixed_keys
 
 # has_key? and has_value? are far more readable than key? and value?
-Style/DeprecatedHashMethods:
+Style/PreferredHashMethods:
   Enabled: false
 
 # String#% is by far the least verbose and only object oriented variant.
@@ -72,10 +75,10 @@ Style/SignalException:
 # Suppressing exceptions can be perfectly fine, and be it to avoid to
 # explicitly type nil into the rescue since that's what you want to return,
 # or suppressing LoadError for optional dependencies
-Lint/HandleExceptions:
+Lint/SuppressedException:
   Enabled: false
 
-Style/SpaceInsideBlockBraces:
+Layout/SpaceInsideBlockBraces:
   # The space here provides no real gain in readability while consuming
   # horizontal space in that could be used for a better parameter name.
   # Also {| differentiates better from a hash than { | does.
@@ -83,12 +86,12 @@ Style/SpaceInsideBlockBraces:
 
 # No trailing space differentiates better from the block:
 # foo} means hash, foo } means block.
-Style/SpaceInsideHashLiteralBraces:
+Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
 # { ... } for multi-line blocks is okay, follow Weirichs rule instead:
 # https://web.archive.org/web/20140221124509/http://onestepback.org/index.cgi/Tech/Ruby/BraceVsDoEnd.rdoc
-Style/Blocks:
+Style/BlockDelimiters:
   Enabled: false
 
 # do / end blocks should be used for side effects,
@@ -115,14 +118,25 @@ Style/Documentation:
   Enabled: false
 
 # This is just silly. Calling the argument `other` in all cases makes no sense.
-Style/OpMethod:
+Naming/BinaryOperatorParameterName:
   Enabled: false
+
+# Yeah, no
+Metrics/BlockLength:
+  Enabled: false
+
+# alias_method is a lot more flexible and predictable
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
 
 # There are valid cases, for example debugging Cucumber steps,
 # also they'll fail CI anyway
 Lint/Debugger:
   Enabled: false
 
+# Rubocop supports >= 2.4 but we have no reason to drop support for 2.0 - 2.3
+Gemspec/RequiredRubyVersion:
+  Enabled: false
 
 # Style preference
 Style/MethodDefParentheses:

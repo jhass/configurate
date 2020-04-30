@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Configurate
   module Provider
     # This provider looks for settings in the environment.

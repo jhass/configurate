@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Configurate
   # This object builds a chain of configuration providers to try to find
   # the value of a setting.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Configurate
   module Provider
     # This provides a basic {#lookup} method for other providers to build
@@ -9,6 +11,7 @@ module Configurate
       def lookup(*args)
         result = lookup_path(*args)
         return result unless result.nil?
+
         raise Configurate::SettingNotFoundError, "The setting #{args.first} was not found"
       end
     end
@@ -24,6 +27,7 @@ module Configurate
         hash = hash[setting_path.shift]
       end
       return fallback.call unless setting_path.empty?
+
       hash
     end
   end

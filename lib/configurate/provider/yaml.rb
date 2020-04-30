@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "yaml"
 
 module Configurate
@@ -22,7 +24,8 @@ module Configurate
         unless namespace.nil?
           @settings = Provider.lookup_in_hash(SettingPath.new(namespace), @settings) do
             raise ArgumentError, "Namespace #{namespace} not found in #{file}" if required
-            $stderr.puts "WARNING: Namespace #{namespace} not found in #{file}"
+
+            warn "WARNING: Namespace #{namespace} not found in #{file}"
             nil
           end
         end
@@ -34,6 +37,7 @@ module Configurate
       def lookup_path setting_path, *_
         Provider.lookup_in_hash(setting_path, @settings) {
           raise MissingSetting.new "#{setting_path} is not a valid setting." if @raise_on_missing
+
           nil
         }
       end

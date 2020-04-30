@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Configurate::SettingPath do
@@ -10,7 +12,7 @@ describe Configurate::SettingPath do
   describe "#initialize" do
     context "with a string" do
       it "creates a path" do
-        expect(described_class.new long_path.to_s).to eq long_path
+        expect(described_class.new(long_path.to_s)).to eq long_path
       end
     end
   end
@@ -53,7 +55,7 @@ describe Configurate::SettingPath do
 
   describe "#initialize_copy" do
     it "modifying a copy leaves the original unchanged" do
-      original = described_class.new %w(foo bar)
+      original = described_class.new %w[foo bar]
       copy = original.clone
       copy << "baz"
       expect(copy).to include "baz"
@@ -89,14 +91,14 @@ describe Configurate::SettingPath do
     end
   end
 
-  %i(join first last shift pop).each do |method|
+  %i[join first last shift pop].each do |method|
     describe "##{method}" do
       subject { question_path.public_send method }
       it { should_not include "?" }
     end
   end
 
-  %i(<< unshift push).each do |method|
+  %i[<< unshift push].each do |method|
     describe "##{method}" do
       it "converts the argument to a string" do
         arg = double
@@ -119,7 +121,7 @@ describe Configurate::SettingPath do
 
   describe "#inspect" do
     it "includes the dotted path" do
-      path = described_class.new(%i(foo bar))
+      path = described_class.new(%i[foo bar])
       expect(path.inspect).to include "foo.bar"
     end
   end

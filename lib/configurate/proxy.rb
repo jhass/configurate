@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Configurate
   # Proxy object to support nested settings
   #
@@ -23,7 +25,7 @@ module Configurate
       !target
     end
 
-    %i(!= == eql? coerce).each do |method|
+    %i[!= == eql? coerce].each do |method|
       define_method method do |other|
         target.public_send method, target_or_object(other)
       end
@@ -38,6 +40,7 @@ module Configurate
       define_method method do
         value = target
         return value.public_send converter if value.respond_to? converter
+
         value.public_send method
       end
     end
@@ -55,6 +58,9 @@ module Configurate
     end
     alias_method :public_send, :send
 
+    # rubocop:disable Style/MethodMissingSuper we handle all calls
+    # rubocop:disable Style/MissingRespondToMissing we override respond_to? instead
+
     def method_missing setting, *args, &block
       return target.public_send(setting, *args, &block) if target_respond_to? setting
 
@@ -64,6 +70,7 @@ module Configurate
 
       self
     end
+    # rubocop:enable all
 
     # Get the setting at the current path, if found.
     # (see LookupChain#lookup)
@@ -76,7 +83,7 @@ module Configurate
 
     private
 
-    COMMON_KEY_NAMES = %i(key method)
+    COMMON_KEY_NAMES = %i[key method].freeze
 
     def target_respond_to? setting, include_private=false
       return false if COMMON_KEY_NAMES.include? setting

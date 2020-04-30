@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Configurate::Provider::YAML do
@@ -31,7 +33,7 @@ describe Configurate::Provider::YAML do
         namespace = "some.nested"
         allow(::YAML).to receive(:load_file).and_return(settings)
         provider = described_class.new "bla", namespace: namespace
-        expect(provider.instance_variable_get :@settings).to eq settings["some"]["nested"]
+        expect(provider.instance_variable_get(:@settings)).to eq settings["some"]["nested"]
       end
 
       it "raises if the namespace isn't found" do
@@ -73,11 +75,11 @@ describe Configurate::Provider::YAML do
     end
 
     it "looks up the whole nesting" do
-      expect(@provider.lookup_path %w(some nested some)).to eq settings["some"]["nested"]["some"]
+      expect(@provider.lookup_path(%w[some nested some])).to eq settings["some"]["nested"]["some"]
     end
 
     it "returns nil if no setting is found" do
-      expect(@provider.lookup_path ["not_me"]).to be_nil
+      expect(@provider.lookup_path(["not_me"])).to be_nil
     end
 
     context "with raise_on_missing set to true" do
@@ -86,7 +88,7 @@ describe Configurate::Provider::YAML do
       end
 
       it "looks up the whole nesting" do
-        expect(@provider.lookup_path %w(some nested some)).to eq settings["some"]["nested"]["some"]
+        expect(@provider.lookup_path(%w[some nested some])).to eq settings["some"]["nested"]["some"]
       end
 
       it "returns nil if no setting is found" do

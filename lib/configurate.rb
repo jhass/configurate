@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "forwardable"
 
 require "configurate/setting_path"
@@ -57,10 +59,14 @@ module Configurate
 
     def_delegators :@lookup_chain, :lookup, :add_provider, :[]
 
+    # rubocop:disable Style/MethodMissingSuper we handle all calls
+    # rubocop:disable Style/MissingRespondToMissing we override respond_to? instead
+
     # See description and {#lookup}, {#[]} and {#add_provider}
     def method_missing(method, *args, &block)
       Proxy.new(@lookup_chain).public_send(method, *args, &block)
     end
+    # rubocop:enable all
 
     # Create a new configuration object
     # @yield the given block will be evaluated in the context of the new object

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Configurate::Provider::Env do
   subject { described_class.new }
-  let(:existing_path) { %w(existing setting) }
-  let(:not_existing_path) { %w(not existing path) }
+  let(:existing_path) { %w[existing setting] }
+  let(:not_existing_path) { %w[not existing path] }
   let(:array_path) { ["array"] }
   before(:all) do
     ENV["EXISTING_SETTING"] = "there"
@@ -22,11 +24,11 @@ describe Configurate::Provider::Env do
     end
 
     it "returns nil if the setting isn't available" do
-      expect(subject.lookup_path not_existing_path).to be_nil
+      expect(subject.lookup_path(not_existing_path)).to be_nil
     end
 
     it "makes an array out of comma separated values" do
-      expect(subject.lookup_path array_path).to eq %w(foo bar baz)
+      expect(subject.lookup_path(array_path)).to eq %w[foo bar baz]
     end
 
     it "returns a unfrozen string" do

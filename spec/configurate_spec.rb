@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Configurate::Settings do
@@ -13,7 +15,7 @@ describe Configurate::Settings do
   end
 
   %i(lookup add_provider []).each do |method|
-    describe "#{method}" do
+    describe method.to_s do
       subject { described_class.create }
 
       it "delegates the call to #lookup_chain" do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Configurate
   module Provider
     # This provider knows nothing upon initialization, however if you access
@@ -13,7 +15,7 @@ module Configurate
           return true
         end
 
-        if setting_path.setter? && args.length > 0
+        if setting_path.setter? && !args.empty?
           *root, key = setting_path.to_a
           hash = root.inject(settings) {|hash, key| hash[key] }
           hash[key] = extract_value(args)
