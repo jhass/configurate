@@ -2,6 +2,7 @@
 
 * `Configurate::Proxy` returns its own singleton class if the target does not support creating one.
 * Extract `Configurate::Provider::StringHash` as a new base class for hash based providers.
+* Add `Configurate::Provider::TOML`.
 
 # 0.3.1
 

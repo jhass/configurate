@@ -40,7 +40,7 @@ describe Configurate::Provider::YAML do
         allow(::YAML).to receive(:load_file).and_return({})
         expect {
           described_class.new "bla", namespace: "bar"
-        }.to raise_error
+        }.to raise_error ArgumentError
       end
 
       it "works with an empty namespace in the file" do
@@ -55,14 +55,18 @@ describe Configurate::Provider::YAML do
       it "doesn't raise if a file isn't found" do
         allow(::YAML).to receive(:load_file).and_raise(Errno::ENOENT)
         expect {
-          described_class.new "not_me", required: false
+          silence_stderr do
+            described_class.new "not_me", required: false
+          end
         }.not_to raise_error
       end
 
       it "doesn't raise if a namespace isn't found" do
         allow(::YAML).to receive(:load_file).and_return({})
         expect {
-          described_class.new "bla", namespace: "foo", required: false
+          silence_stderr do
+            described_class.new "bla", namespace: "foo", required: false
+          end
         }.not_to raise_error
       end
     end

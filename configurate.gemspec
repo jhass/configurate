@@ -19,4 +19,5 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rake",  ">= 10.0.3"
   s.add_development_dependency "rspec", ">= 3.0"
+  s.add_development_dependency "tomlrb", ">= 1.3.0"
 end

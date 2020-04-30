@@ -106,14 +106,6 @@ will always output `unknown`. Again use `.get`
 
 ## Shipped providers
 
-### Configurate::Provider::Base
-
-A convenience base class changing the interface for implementers. It provides a basic `#lookup` method
-which just passes all parameters through to `#lookup_path`.
-The result of `#lookup_path` is returned, unless it's `nil`
-then `Configurate::SettingNotFoundError` is raised. Subclasses are expected to implement `#lookup_path`.
-Do not use this class directly as a provider!
-
 ### Configurate::Provider::Env
 
 This class transforms a query string into a name for a environment variable and looks up this variable then.
@@ -122,6 +114,40 @@ would look for a environment variable named `FOO_BAR_BAZ`. Additionally it split
 into arrays.
 
 This provider does not take any additional initialization parameters.
+
+### Configurate::Provider::TOML
+
+This provider reads settings from a given [TOML](https://github.com/toml-lang/toml) file. It converts the sections of
+query string to a nested value. For a given TOML file
+
+```toml
+[stuff]
+enable = true
+param = "foo"
+
+[stuff.nested]
+param = "bar"
+```
+
+the following queries would be valid:
+
+```ruby
+Config.stuff.enable?      # => true
+Config.stuff.param        # => "foo"
+Config.stuff.nested.param # => "bar"
+```
+
+This provider depends on the [tomlrb](https://github.com/fbernier/tomlrb) gem. This is why it is not loaded by default and
+needs an explicit `require 'configurate/provider/toml' to be available.
+
+The initializer takes a path to the configuration file a the mandatory first argument and
+the following optional parameters:
+
+* *namespace:* Specify a alternative root. This is useful if you for example add the same file multiple
+  times through multiple providers, with different namespaces, letting you override settings depending on
+  the rails environment, without duplicating common settings. Defaults to none.
+* *required:* Whether to raise an error if the the file isn't found or, if one is given, the namespace
+  doesn't exist in the file.
 
 ### Configurate::Provider::YAML
 
@@ -190,8 +216,8 @@ the following optional parameters:
   doesn't exist in the hash.
 * *source:* A hint text about the origin of the configuration data to be used in error messages.
 
-As you may have noticed by now, `Configurate::Provider::YAML` is merely a convenience subclass of this provider,
-loading the file for you.
+As you may have noticed by now, `Configurate::Provider::YAML` and `Configurate::Provider::TOML` are merely convenience
+subclasses of this provider, loading the file for you.
 
 ### Configurate::Provider::Dynamic
 
@@ -205,6 +231,14 @@ Config.foo.bar         # => "baz"
 Config.reset_dynamic!
 Config.foo.bar         # => nil
 ```
+
+### Configurate::Provider::Base
+
+A convenience base class changing the interface for implementers. It provides a basic `#lookup` method
+which just passes all parameters through to `#lookup_path`.
+The result of `#lookup_path` is returned, unless it's `nil`
+then `Configurate::SettingNotFoundError` is raised. Subclasses are expected to implement `#lookup_path`.
+Do not use this class directly as a provider!
 
 ## Writing a provider
 

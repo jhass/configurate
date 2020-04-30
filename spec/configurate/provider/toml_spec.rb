@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "configurate/provider/toml"
 
-describe Configurate::Provider::StringHash do
+describe Configurate::Provider::TOML do
   let(:settings) {
     {
       "toplevel" => "bar",
@@ -13,37 +14,63 @@ describe Configurate::Provider::StringHash do
   }
 
   describe "#initialize" do
-    it "raises if the argument is not hash" do
+    it "loads the file" do
+      file = "foobar.toml"
+      expect(Tomlrb).to receive(:load_file).with(file).and_return({})
+      described_class.new file
+    end
+
+    it "raises if the file is not found" do
+      allow(Tomlrb).to receive(:load_file).and_raise(Errno::ENOENT)
       expect {
-        described_class.new "foo"
-      }.to raise_error ArgumentError
+        silence_stderr do
+          described_class.new "foo"
+        end
+      }.to raise_error Errno::ENOENT
     end
 
     context "with a namespace" do
-      it "looks in the hash for that namespace" do
+      it "looks in the file for that namespace" do
         namespace = "some.nested"
-        provider = described_class.new settings, namespace: namespace
+        allow(Tomlrb).to receive(:load_file).and_return(settings)
+        provider = described_class.new "bla", namespace: namespace
         expect(provider.instance_variable_get(:@settings)).to eq settings["some"]["nested"]
       end
 
       it "raises if the namespace isn't found" do
+        allow(Tomlrb).to receive(:load_file).and_return({})
         expect {
-          described_class.new({}, namespace: "bar")
+          silence_stderr do
+            described_class.new "bla", namespace: "bar"
+          end
         }.to raise_error ArgumentError
       end
 
       it "works with an empty namespace in the file" do
+        allow(Tomlrb).to receive(:load_file).and_return("foo" => {"bar" => nil})
         expect {
-          described_class.new({"foo" => {"bar" => nil}}, namespace: "foo.bar")
+          silence_stderr do
+            described_class.new "bla", namespace: "foo.bar"
+          end
         }.to_not raise_error
       end
     end
 
     context "with required set to false" do
-      it "doesn't raise if a namespace isn't found" do
+      it "doesn't raise if a file isn't found" do
+        allow(Tomlrb).to receive(:load_file).and_raise(Errno::ENOENT)
         expect {
           silence_stderr do
-            described_class.new({}, namespace: "foo", required: false)
+            described_class.new "not_me", required: false
+          end
+        }.not_to raise_error
+      end
+
+      it "doesn't raise if a namespace isn't found" do
+        allow(Tomlrb).to receive(:load_file).and_return({})
+        expect {
+          silence_stderr do
+            described_class.new "bla", namespace: "foo", required: false
           end
         }.not_to raise_error
       end
@@ -52,7 +79,8 @@ describe Configurate::Provider::StringHash do
 
   describe "#lookup_path" do
     before do
-      @provider = described_class.new settings
+      allow(Tomlrb).to receive(:load_file).and_return(settings)
+      @provider = described_class.new "dummy"
     end
 
     it "looks up the whole nesting" do
@@ -65,7 +93,7 @@ describe Configurate::Provider::StringHash do
 
     context "with raise_on_missing set to true" do
       before do
-        @provider = described_class.new settings, raise_on_missing: true
+        @provider = described_class.new "dummy", raise_on_missing: true
       end
 
       it "looks up the whole nesting" do

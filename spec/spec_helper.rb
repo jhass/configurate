@@ -18,6 +18,7 @@ require "configurate"
 def silence_stderr
   $stderr = StringIO.new
   yield
+ensure
   $stderr = STDERR
 end
 
