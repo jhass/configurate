@@ -4,3 +4,4 @@ coverage/
 doc/
 .yardoc/
 vendor/bundle
+Gemfile.lock
