@@ -144,14 +144,54 @@ Config.stuff.param        # => "foo"
 Config.stuff.nested.param # => "bar"
 ```
 
-The initializer takes a path to the configuration file as mandatory first argument and
-the following optional parameters, as a hash:
+The initializer takes a path to the configuration file a the mandatory first argument and
+the following optional parameters:
 
 * *namespace:* Specify a alternative root. This is useful if you for example add the same file multiple
   times through multiple providers, with different namespaces, letting you override settings depending on
   the rails environment, without duplicating common settings. Defaults to none.
 * *required:* Whether to raise an error if the the file isn't found or, if one is given, the namespace
   doesn't exist in the file.
+
+
+### Configurate::Provider::StringHash
+
+A provider taking a (nested) `Hash` where all keys are strings. The query string is then looked up in this hash.
+
+So for a given `Hash`
+
+```ruby
+{
+  "stuff" => {
+    "enable" => true,
+    "param" => "foo",
+    "nested" => {
+      "param" => "bar"
+    }
+  }
+}
+```
+
+the following queries would be valid:
+
+```ruby
+Config.stuff.enable?      # => true
+Config.stuff.param        # => "foo"
+Config.stuff.nested.param # => "bar"
+```
+
+The initializer takes the hash as the mandatory first argument and
+the following optional parameters:
+
+* *namespace:* Specify a alternative root. This is useful if you for example add the same file multiple
+  times through multiple providers, with different namespaces, letting you override settings depending on
+  the rails environment, without duplicating common settings. Defaults to none.
+* *required:* Whether to raise an error if the namespace
+  doesn't exist in the hash.
+* *source:* A hint text about the origin of the configuration data to be used in error messages.
+
+As you may have noticed by now, `Configurate::Provider::YAML` is merely a convenience subclass of this provider,
+loading the file for you.
 
 ### Configurate::Provider::Dynamic
 
@@ -182,6 +222,8 @@ class Configurate::Provider::Env < Configurate::Provider::Base
   end
 end
 ```
+
+`Configurate::Provider::StringHash` should also serve as a useful baseclass for most providers.
 
 
 ## Documentation

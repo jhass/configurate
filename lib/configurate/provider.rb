@@ -33,6 +33,7 @@ module Configurate
   end
 end
 
+require "configurate/provider/string_hash"
 require "configurate/provider/yaml"
 require "configurate/provider/env"
 require "configurate/provider/dynamic"
