@@ -1,8 +1,5 @@
 language: ruby
-
-sudo: false
 cache: bundler
-
 bundler_args: "--without doc build"
 rvm:
   - 2.0
@@ -12,4 +9,7 @@ rvm:
   - 2.5
   - 2.6
   - 2.7
-  - rbx
+  - rbx-3
+  - rbx-4
+  - jruby
+  - truffleruby
