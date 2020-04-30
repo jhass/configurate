@@ -58,6 +58,14 @@ module Configurate
     end
     alias_method :public_send, :send
 
+    def singleton_class
+      target.singleton_class
+    rescue ::TypeError
+      class << self
+        self
+      end
+    end
+
     # rubocop:disable Style/MethodMissingSuper we handle all calls
     # rubocop:disable Style/MissingRespondToMissing we override respond_to? instead
 

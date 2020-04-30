@@ -1,3 +1,6 @@
+# Unreleased
+* `Configurate::Proxy` returns its own singleton class if the target does not support creating one
+
 # 0.3.1
 
 * Configurate::Provider::Dynamic returns true when passed the special
