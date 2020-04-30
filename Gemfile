@@ -10,13 +10,8 @@ group :development do
 end
 
 group :doc do
-  gem "yard", require: false
   gem "redcarpet", require: false
-end
-
-platform :rbx do
-  gem "psych"
-  gem "rubysl-singleton"
+  gem "yard", require: false
 end
 
 gemspec

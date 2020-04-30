@@ -9,7 +9,5 @@ rvm:
   - 2.5
   - 2.6
   - 2.7
-  - rbx-3
-  - rbx-4
   - jruby
   - truffleruby
