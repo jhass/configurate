@@ -4,6 +4,8 @@ require "spec_helper"
 require "configurate/provider/toml"
 
 describe Configurate::Provider::TOML do
+  PARSER = Configurate::Provider::TOML::PARSER
+
   let(:settings) {
     {
       "toplevel" => "bar",
@@ -16,12 +18,12 @@ describe Configurate::Provider::TOML do
   describe "#initialize" do
     it "loads the file" do
       file = "foobar.toml"
-      expect(Tomlrb).to receive(:load_file).with(file).and_return({})
+      expect(PARSER).to receive(:load_file).with(file).and_return({})
       described_class.new file
     end
 
     it "raises if the file is not found" do
-      allow(Tomlrb).to receive(:load_file).and_raise(Errno::ENOENT)
+      allow(PARSER).to receive(:load_file).and_raise(Errno::ENOENT)
       expect {
         silence_stderr do
           described_class.new "foo"
@@ -32,13 +34,13 @@ describe Configurate::Provider::TOML do
     context "with a namespace" do
       it "looks in the file for that namespace" do
         namespace = "some.nested"
-        allow(Tomlrb).to receive(:load_file).and_return(settings)
+        allow(PARSER).to receive(:load_file).and_return(settings)
         provider = described_class.new "bla", namespace: namespace
         expect(provider.instance_variable_get(:@settings)).to eq settings["some"]["nested"]
       end
 
       it "raises if the namespace isn't found" do
-        allow(Tomlrb).to receive(:load_file).and_return({})
+        allow(PARSER).to receive(:load_file).and_return({})
         expect {
           silence_stderr do
             described_class.new "bla", namespace: "bar"
@@ -47,7 +49,7 @@ describe Configurate::Provider::TOML do
       end
 
       it "works with an empty namespace in the file" do
-        allow(Tomlrb).to receive(:load_file).and_return("foo" => {"bar" => nil})
+        allow(PARSER).to receive(:load_file).and_return("foo" => {"bar" => nil})
         expect {
           silence_stderr do
             described_class.new "bla", namespace: "foo.bar"
@@ -58,7 +60,7 @@ describe Configurate::Provider::TOML do
 
     context "with required set to false" do
       it "doesn't raise if a file isn't found" do
-        allow(Tomlrb).to receive(:load_file).and_raise(Errno::ENOENT)
+        allow(PARSER).to receive(:load_file).and_raise(Errno::ENOENT)
         expect {
           silence_stderr do
             described_class.new "not_me", required: false
@@ -67,7 +69,7 @@ describe Configurate::Provider::TOML do
       end
 
       it "doesn't raise if a namespace isn't found" do
-        allow(Tomlrb).to receive(:load_file).and_return({})
+        allow(PARSER).to receive(:load_file).and_return({})
         expect {
           silence_stderr do
             described_class.new "bla", namespace: "foo", required: false
@@ -79,7 +81,7 @@ describe Configurate::Provider::TOML do
 
   describe "#lookup_path" do
     before do
-      allow(Tomlrb).to receive(:load_file).and_return(settings)
+      allow(PARSER).to receive(:load_file).and_return(settings)
       @provider = described_class.new "dummy"
     end
 

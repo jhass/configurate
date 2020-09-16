@@ -1,3 +1,8 @@
+# 0.5.0
+
+* Support and prefer `toml-rb` over `tomlrb` in the shipped TOML provider.
+* Drop explicit support for Ruby < 2.4
+
 # 0.4.0
 
 * `Configurate::Proxy` returns its own singleton class if the target does not support creating one.

@@ -137,8 +137,8 @@ Config.stuff.param        # => "foo"
 Config.stuff.nested.param # => "bar"
 ```
 
-This provider depends on the [tomlrb](https://github.com/fbernier/tomlrb) gem. This is why it is not loaded by default and
-needs an explicit `require 'configurate/provider/toml'` to be available.
+This provider depends on the [toml-rb](https://github.com/emancu/toml-rb) or the [tomlrb](https://github.com/fbernier/tomlrb) gem.
+This is why it is not loaded by default and needs an explicit `require 'configurate/provider/toml'` to be available. If both are available, toml-rb is preferred.
 
 The initializer takes a path to the configuration file a the mandatory first argument and
 the following optional parameters:

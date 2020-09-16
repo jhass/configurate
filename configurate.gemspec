@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = "configurate"
-  s.version     = "0.4.0"
+  s.version     = "0.5.0"
   s.summary     = "Flexbile configuration system"
   s.description = "Configurate is a flexible configuration system that can "\
                   "read settings from multiple sources at the same time."
@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rake",  ">= 10.0.3"
   s.add_development_dependency "rspec", ">= 3.0"
-  s.add_development_dependency "tomlrb", ">= 1.3.0"
+  s.add_development_dependency "toml-rb", ">= 2.0.1"
 end

@@ -1,13 +1,20 @@
 # frozen_string_literal: true
 
 require "configurate"
-require "tomlrb"
 
 module Configurate
   module Provider
     # This provider tries to open a TOML file and does nested lookups
     # in it.
     class TOML < StringHash
+      begin
+        require "toml-rb"
+        PARSER = TomlRB
+      rescue LoadError => e
+        require "tomlrb"
+        PARSER = Tomlrb
+      end
+
       # @param file [String] the path to the file
       # @param namespace [String] optionally set this as the root
       # @param required [Boolean] whether or not to raise an error if
@@ -17,7 +24,7 @@ module Configurate
       # @raise [ArgumentError] if the namespace isn't found in the file
       # @raise [Errno:ENOENT] if the file isn't found
       def initialize file, namespace: nil, required: true, raise_on_missing: false
-        super(Tomlrb.load_file(file),
+        super(PARSER.load_file(file),
           namespace:        namespace,
           required:         required,
           raise_on_missing: raise_on_missing,
