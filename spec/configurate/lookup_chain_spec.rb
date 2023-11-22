@@ -27,6 +27,11 @@ describe Configurate::LookupChain do
       expect(ValidConfigurationProvider).to receive(:new).with(:extra)
       subject.add_provider ValidConfigurationProvider, :extra
     end
+
+    it "passes keyword args to the provider" do
+      expect(ValidConfigurationProvider).to receive(:new).with(required: false)
+      subject.add_provider ValidConfigurationProvider, required: false
+    end
   end
 
   describe "#lookup" do

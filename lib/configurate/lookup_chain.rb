@@ -12,15 +12,15 @@ module Configurate
     # they are added, so the order is important.
     #
     # @param provider [#lookup]
-    # @param *args the arguments passed to the providers constructor
+    # @param ... the arguments passed to the providers constructor
     # @raise [ArgumentError] if an invalid provider is given
     # @return [void]
-    def add_provider(provider, *args)
+    def add_provider(provider, ...)
       unless provider.respond_to?(:instance_methods) && provider.instance_methods.include?(:lookup)
         raise ArgumentError, "the given provider does not respond to lookup"
       end
 
-      @provider << provider.new(*args)
+      @provider << provider.new(...)
     end
 
     # Tries all providers in the order they were added to provide a response
@@ -31,11 +31,11 @@ module Configurate
     # @param ... further args passed to the provider
     # @return [Array,Hash,String,Boolean,nil] whatever the responding
     #   provider provides is casted to a {String}, except for some special values
-    def lookup(setting, *args)
+    def lookup(setting, ...)
       setting = SettingPath.new setting if setting.is_a? String
       @provider.each do |provider|
         begin
-          return special_value_or_string(provider.lookup(setting.clone, *args))
+          return special_value_or_string(provider.lookup(setting.clone, ...))
         rescue SettingNotFoundError; end
       end
 
