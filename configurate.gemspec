@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = "configurate"
-  s.version     = "0.5.0"
+  s.version     = "0.6.0"
   s.summary     = "Flexbile configuration system"
   s.description = "Configurate is a flexible configuration system that can "\
                   "read settings from multiple sources at the same time."

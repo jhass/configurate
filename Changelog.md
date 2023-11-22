@@ -1,3 +1,8 @@
+# 0.6.0
+
+* Add support for Ruby 3.2
+* Drop support for Ruby below 2.7
+
 # 0.5.0
 
 * Support and prefer `toml-rb` over `tomlrb` in the shipped TOML provider.
